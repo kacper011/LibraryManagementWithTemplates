@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Books</title>
+</head>
+<body>
+
+<h2>All Books</h2>
+
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Genre</th>
+    <th>Available</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="book : ${books}">
+    <td th:text="${book.id}"></td>
+    <td th:text="${book.title}"></td>
+    <td th:text="${book.author}"></td>
+    <td th:text="${book.genre}"></td>
+    <td th:text="${book.available} ? 'Yes' : 'No'"></td>
+  </tr>
+  </tbody>
+</table>
+
+<h2>Add New Book</h2>
+
+<form action="/api/books" method="post" th:object="${newBook}">
+  <label>Title: <input type="text" th:field="*{title}" required/></label><br/>
+  <label>Author: <input type="text" th:field="*{author}" required/></label><br/>
+  <label>Genre: <input type="text" th:field="*{genre}" required/></label><br/>
+  <label>Available: <input type="checkbox" th:field="*{available}"/></label><br/>
+  <input type="submit" value="Add Book"/>
+</form>
+
+</body>
+</html>
