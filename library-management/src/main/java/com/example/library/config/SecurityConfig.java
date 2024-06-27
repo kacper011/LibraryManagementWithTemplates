@@ -3,32 +3,36 @@ package com.example.library.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
 @Configuration
-public class SecurityConfig {
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/books/**").hasRole("ADMIN")
-                        .anyRequest().permitAll()
-                )
-                .formLogin((form) -> form
-                        .loginPage("/login")
-                        .permitAll()
-                        .defaultSuccessUrl("/books.html", true)
-                )
-                .logout(LogoutConfigurer::permitAll
-                );
-        return http.build();
-
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests(authorize -> {
+                    authorize
+                            .antMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                            .antMatchers("/login").permitAll()
+                            .anyRequest().authenticated();
+                })
+                .formLogin(form -> {
+                    form
+                            .loginPage("/login")
+                            .permitAll();
+                })
+                .logout(logout -> {
+                    logout
+                            .permitAll();
+                })
+                .csrf().disable(); // Wyłączenie CSRF dla testów - w produkcji powinno być włączone!
     }
 
 
