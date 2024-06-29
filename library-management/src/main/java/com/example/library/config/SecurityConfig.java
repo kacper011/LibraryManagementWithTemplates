@@ -18,6 +18,7 @@ public class SecurityConfig {
         http
                 .authorizeRequests(authorize -> {
                     authorize
+                            .requestMatchers("/books").permitAll()
                             .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                             .requestMatchers("/login").permitAll()
                             .anyRequest().authenticated();
@@ -38,8 +39,6 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        String userPassword = passwordEncoder().encode("user");
-        String adminPassword = passwordEncoder().encode("admin");
 
 
         manager.createUser(User.withUsername("user")
