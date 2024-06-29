@@ -2,6 +2,7 @@ package com.example.library.controller;
 
 import com.example.library.model.Book;
 import com.example.library.service.BookService;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@Controller
 //@RequestMapping("/api/books")
 public class BookController {
 
