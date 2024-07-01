@@ -2,8 +2,10 @@ package com.example.library.controller;
 
 import com.example.library.model.Book;
 import com.example.library.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +39,13 @@ public class BookController {
     }
 
     @PostMapping("/books")
-    public String saveBook(@ModelAttribute("book") Book book) {
+    public String saveBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("book", book);
+            return "create_book";
+        }
+
         bookService.createBook(book);
         return "redirect:/books";
     }
