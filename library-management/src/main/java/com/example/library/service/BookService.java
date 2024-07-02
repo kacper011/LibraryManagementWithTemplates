@@ -9,4 +9,8 @@ public interface BookService {
     List<Book> getAllBooks();
 
     void createBook(Book book);
+
+    Book getBookById(Long id);
+
+    void updateStudent(Book book);
 }

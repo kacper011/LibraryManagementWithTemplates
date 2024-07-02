@@ -44,7 +44,9 @@
         <td th:text="${book.title}"></td>
         <td th:text="${book.author}"></td>
         <td th:text="${book.isAvailable}"></td>
-        <td></td>
+        <td>
+          <a class="btn btn-primary" th:href="@{/books/{id}/edit(id=${book.id})}">Edit</a>
+        </td>
       </tr>
     </tbody>
   </table>
