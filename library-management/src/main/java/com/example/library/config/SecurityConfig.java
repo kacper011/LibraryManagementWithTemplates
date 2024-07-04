@@ -9,12 +9,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests(authorize -> {
                     authorize
@@ -26,6 +28,7 @@ public class SecurityConfig {
                 .formLogin(form -> {
                     form
                             .loginPage("/login")
+                            .defaultSuccessUrl("/books", true)
                             .permitAll();
                 })
                 .logout(logout -> {
@@ -33,6 +36,9 @@ public class SecurityConfig {
                             .permitAll();
                 })
                 .csrf().disable(); // Wyłączenie CSRF dla testów - w produkcji powinno być włączone!
+
+        return http.build();
+
     }
 
 
