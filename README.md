@@ -30,7 +30,8 @@ Po zakończeniu procesu git clone, możesz przejść do katalogu repozytorium na
 Po włączeniu aplikacji, należy przejść do przeglądarki i wpisać adres localhost:8080/books. Od razu przekieruje nas na stronę localhost:8080/login, musimy się zalogować używając jednego z dwóch kont: 
 Login: user
 Password: user
----------------
+
+
 Login: admin
 Password: admin.
 
