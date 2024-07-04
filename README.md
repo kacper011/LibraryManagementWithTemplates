@@ -5,10 +5,6 @@ Aplikacja webowa do zarządzania biblioteką, umożliwiająca zarządzanie ksią
 ## Funkcje
 
 - Logowanie użytkowników.
-  Utworzone są 2 konta: user i administrator.
-  Konto user: Login - user, Password - user
-  Konto admin: Login - admin, Password - admin.
-  
 - Zarządzanie książkami: administrator może dodawać książki, edytować i usuwać.
 - Wypożyczanie i zwracanie książek: użytkownik ma opcję wypożyczenia, a następnie oddania książki.
 - Przeglądanie dostępności książek: użytkownik ma dostęp do całej listy książek, do wypożyczenia jak i do tych, które są w tej chwili wypożyczone.
@@ -30,3 +26,11 @@ Użyj komendy git clone w terminalu, aby sklonować repozytorium z GitHuba. Skł
 git clone https://github.com/kacper011/LibraryManagementWithTemplates.git
 
 Po zakończeniu procesu git clone, możesz przejść do katalogu repozytorium na swoim komputerze i sprawdzić, czy wszystkie pliki zostały pomyślnie pobrane.
+
+Po włączeniu aplikacji, należy przejść do przeglądarki i wpisać adres localhost:8080/books. Od razu przekieruje nas na stronę localhost:8080/login, musimy się zalogować używając jednego z dwóch kont: 
+Login: user
+Password: user
+---------------
+Login: admin
+Password: admin.
+
