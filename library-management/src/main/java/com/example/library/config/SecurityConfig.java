@@ -20,7 +20,7 @@ public class SecurityConfig {
         http
                 .authorizeRequests(authorize -> {
                     authorize
-                            .requestMatchers("/books").permitAll()
+                            .requestMatchers("/books").authenticated()
                             .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                             .requestMatchers("/login").permitAll()
                             .anyRequest().authenticated();
