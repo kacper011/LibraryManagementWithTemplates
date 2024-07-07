@@ -69,4 +69,11 @@ public class BookController {
         bookService.deleteBook(id);
         return "redirect:/books";
     }
+
+    @GetMapping("/books/{id}/view")
+    public String viewBook(@PathVariable("id") Long id, Model model) {
+        Book book = bookService.getBookById(id);
+        model.addAttribute("book", book);
+        return "view_book";
+    }
 }
