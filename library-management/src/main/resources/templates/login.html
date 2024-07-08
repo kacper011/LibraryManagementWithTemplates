@@ -2,49 +2,75 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login Page</title>
+    <title>Library Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <style>
         body {
-            background-color: #f8f9fa;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            font-family: 'Arial', sans-serif;
+            color: #fff;
         }
 
         .login-form {
-            width: 400px;
+            width: 360px;
             margin: 100px auto;
-            padding: 30px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 40px 30px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+
+        .login-form h2 {
+            margin-bottom: 30px;
+            font-weight: 600;
+            color: #333333;
+            text-align: center;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-control {
-            box-shadow: none;
+            border-radius: 20px;
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+        }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
         }
 
         .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: #6a11cb;
+            border-color: #6a11cb;
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: bold;
         }
 
         .btn-primary:hover {
-            background-color: #0069d9;
-            border-color: #0062cc;
+            background-color: #2575fc;
+            border-color: #2575fc;
+        }
+
+        .text-danger {
+            margin-top: 15px;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 <div class="login-form">
-    <h2 class="text-center">Login Form</h2>
+    <h2>Library Login</h2>
     <form th:action="@{/login}" method="post">
         <div class="form-group">
             <input type="text" class="form-control" name="username"
-                   placeholder="Username" required autofocus/>
+                   placeholder="Login" required autofocus/>
         </div>
         <div class="form-group">
             <input type="password" class="form-control" name="password"
@@ -54,7 +80,7 @@
             <button type="submit" class="btn btn-primary btn-block">Log in</button>
         </div>
         <p class="text-center text-danger" th:if="${param.error != null}">
-            Invalid username or password.
+            Invalid login or password.
         </p>
     </form>
 </div>
