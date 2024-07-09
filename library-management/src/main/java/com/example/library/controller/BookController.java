@@ -3,6 +3,7 @@ package com.example.library.controller;
 import com.example.library.model.Book;
 import com.example.library.service.BookService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +30,7 @@ public class BookController {
     }
 
     @GetMapping("/books/new")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String addBook(Model model) {
         Book book = new Book();
         model.addAttribute("book", book);
@@ -36,6 +38,7 @@ public class BookController {
     }
 
     @PostMapping("/books")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String saveBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model) {
 
         if (result.hasErrors()) {

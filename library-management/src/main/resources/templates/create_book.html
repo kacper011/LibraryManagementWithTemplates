@@ -1,13 +1,34 @@
 <!DOCTYPE html>
-<html lang="en"
-  xmlns:th="http://www.thymeleaf.org"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
   <meta charset="UTF-8">
   <title>Library Management System</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-        crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .card-header {
+      background-color: #343a40;
+      color: white;
+    }
+    h2 {
+      margin: 0;
+    }
+    .form-label {
+      font-weight: bold;
+    }
+    .btn-primary {
+      width: 100%;
+    }
+    .text-danger {
+      font-size: 0.875rem;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -18,8 +39,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Link widoczny tylko dla administratorów -->
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{/books/new}">New Book</a>
+          <a class="nav-link active" aria-current="page" th:href="@{/books/new}" sec:authorize="hasRole('ROLE_ADMIN')">New Book</a>
         </li>
       </ul>
     </div>
@@ -27,34 +49,39 @@
 </nav>
 <br /><br />
 
-<div class="container row col-md-8 offset-md-2">
-  <div class="card">
-    <div class="card-header">
-      <h2 class="text-center">Create Book</h2>
-    </div>
-    <div class="card-body">
-      <form method="post" role="form" th:action="@{/books}" th:object="${book}">
-        <div class="form-group mb-3">
-          <label class="form-label">Book Title</label>
-          <input class="form-control" id="title" name="title" placeholder="Enter book title" type="text" th:field="*{title}">
-          <p th:if="${#fields.hasErrors('title')}" class="text-danger" th:errors="*{title}"></p>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header text-center">
+          <h2>Create Book</h2>
         </div>
+        <div class="card-body">
+          <form method="post" role="form" th:action="@{/books}" th:object="${book}">
+            <div class="form-group mb-3">
+              <label for="title" class="form-label">Book Title</label>
+              <input class="form-control" id="title" name="title" placeholder="Enter book title" type="text" th:field="*{title}">
+              <p th:if="${#fields.hasErrors('title')}" class="text-danger" th:errors="*{title}"></p>
+            </div>
 
-        <div class="form-group mb-3">
-          <label class="form-label">Book Author</label>
-          <input class="form-control" id="author" name="author" placeholder="Enter book author" type="text" th:field="*{author}">
-          <p th:if="${#fields.hasErrors('author')}" class="text-danger" th:errors="*{author}"></p>
-        </div>
+            <div class="form-group mb-3">
+              <label for="author" class="form-label">Book Author</label>
+              <input class="form-control" id="author" name="author" placeholder="Enter book author" type="text" th:field="*{author}">
+              <p th:if="${#fields.hasErrors('author')}" class="text-danger" th:errors="*{author}"></p>
+            </div>
 
-        <div class="form-group mb-3">
-          <label class="form-label">Book Available</label>
-          <input class="form-control" id="isAvailable" name="isAvailable" placeholder="Enter book title" type="text" th:field="*{isAvailable}">
+            <div class="form-group mb-3">
+              <label for="isAvailable" class="form-label">Book Available</label>
+              <input class="form-control" id="isAvailable" name="isAvailable" placeholder="Is the book available?" type="text" th:field="*{isAvailable}" readonly>
+            </div>
+            <button class="btn btn-primary" type="submit">Submit</button>
+          </form>
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
-      </form>
+      </div>
     </div>
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMF8jYln/NU6Pp3O8jsLxga4q9UWB/jv7Z0n3G1R7rBXgSIBHF6wr06Jz3M" crossorigin="anonymous"></script>
 </body>
 </html>

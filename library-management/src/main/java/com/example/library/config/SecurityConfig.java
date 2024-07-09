@@ -23,6 +23,7 @@ public class SecurityConfig {
                             .requestMatchers("/books").authenticated()
                             .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                             .requestMatchers("/login").permitAll()
+                            .requestMatchers("/books/new").hasRole("ADMIN")
                             .anyRequest().authenticated();
                 })
                 .formLogin(form -> {

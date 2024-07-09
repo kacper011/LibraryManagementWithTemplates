@@ -1,11 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Library Management System</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-        rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-        crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    h1 {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .table thead {
+      background-color: #343a40;
+      color: white;
+    }
+    .btn-primary {
+      margin-right: 5px;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -23,37 +41,43 @@
     </div>
   </div>
 </nav>
-<br /><br />
+<br />
 
 <div class="container">
   <div class="row">
-    <h1>List of Books</h1>
+    <div class="col">
+      <h1 class="text-center">List of Books</h1>
+    </div>
   </div>
   <br />
-  <table class="table table-striped table-hover table-bordered">
-    <thead class="table-dark">
-      <tr>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Available</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr th:each="book : ${books}">
-        <td th:text="${book.title}"></td>
-        <td th:text="${book.author}"></td>
-        <td th:text="${book.isAvailable}"></td>
-        <td>
-          <a class="btn btn-primary" th:href="@{/books/{id}/edit(id=${book.id})}">Edit</a>
-          <a class="btn btn-danger"  th:href="@{/books/{id}/delete(id=${book.id})}">Delete</a>
-          <a class="btn btn-info" th:href="@{/books/{id}/view(id=${book.id})}">View</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="row">
+    <div class="col">
+      <table class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Available</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+          <td th:text="${book.title}"></td>
+          <td th:text="${book.author}"></td>
+          <td th:text="${book.isAvailable}"></td>
+          <td>
+            <a class="btn btn-primary btn-sm" th:href="@{/books/{id}/edit(id=${book.id})}">Edit</a>
+            <a class="btn btn-danger btn-sm" th:href="@{/books/{id}/delete(id=${book.id})}">Delete</a>
+            <a class="btn btn-info btn-sm" th:href="@{/books/{id}/view(id=${book.id})}">View</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMF8jYln/NU6Pp3O8jsLxga4q9UWB/jv7Z0n3G1R7rBXgSIBHF6wr06Jz3M" crossorigin="anonymous"></script>
 </body>
 </html>
