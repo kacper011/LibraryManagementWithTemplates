@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Library Login</title>
+    <title>Library Registration</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <style>
@@ -12,7 +12,7 @@
             color: #fff;
         }
 
-        .login-form {
+        .registration-form {
             width: 360px;
             margin: 100px auto;
             padding: 40px 30px;
@@ -22,7 +22,7 @@
             color: #333;
         }
 
-        .login-form h2 {
+        .registration-form h2 {
             margin-bottom: 30px;
             font-weight: 600;
             color: #333333;
@@ -44,32 +44,18 @@
             box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
         }
 
-        .btn-primary, .btn-secondary {
+        .btn-primary {
+            background-color: #6a11cb;
+            border-color: #6a11cb;
             border-radius: 20px;
             padding: 10px 15px;
             font-size: 16px;
             font-weight: bold;
         }
 
-        .btn-primary {
-            background-color: #6a11cb;
-            border-color: #6a11cb;
-        }
-
         .btn-primary:hover {
             background-color: #2575fc;
             border-color: #2575fc;
-        }
-
-        .btn-secondary {
-            background-color: #ced4da;
-            border-color: #ced4da;
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            background-color: #adb5bd;
-            border-color: #adb5bd;
         }
 
         .text-danger {
@@ -79,28 +65,25 @@
     </style>
 </head>
 <body>
-<div class="login-form">
-    <h2>Library Login</h2>
-    <form th:action="@{/login}" method="post">
+<div class="registration-form">
+    <h2>Library Registration</h2>
+    <form th:action="@{/register}" method="post">
         <div class="form-group">
-            <input type="text" class="form-control" name="username"
-                   placeholder="Login" required autofocus/>
+            <input type="text" class="form-control" name="username" placeholder="Login" required autofocus th:field="*{username}"/>
+            <p th:if="${#fields.hasErrors('username')}" class="text-danger" th:errors="*{username}"></p>
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" name="password"
-                   placeholder="Password" required/>
+            <input type="password" class="form-control" name="password" placeholder="Password" required th:field="*{password}"/>
+            <p th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}"></p>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+            <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" required th:field="*{confirmPassword}"/>
+            <p th:if="${#fields.hasErrors('confirmPassword')}" class="text-danger" th:errors="*{confirmPassword}"></p>
         </div>
-        <p class="text-center text-danger" th:if="${param.error != null}">
-            Invalid login or password.
-        </p>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </div>
     </form>
-    <div class="text-center">
-        <p>Don't have an account?</p>
-        <a th:href="@{/registration}" class="btn btn-secondary btn-block">Register</a>
-    </div>
 </div>
 </body>
 </html>

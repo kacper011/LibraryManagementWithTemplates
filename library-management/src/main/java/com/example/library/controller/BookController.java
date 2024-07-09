@@ -50,6 +50,7 @@ public class BookController {
         return "redirect:/books";
     }
     @GetMapping("/books/{id}/edit")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String editBook(@PathVariable("id") Long id, Model model) {
         Book book = bookService.getBookById(id);
         model.addAttribute("book", book);
@@ -57,6 +58,7 @@ public class BookController {
     }
 
     @PostMapping("/books/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateBook(@PathVariable("id") Long id,@Valid @ModelAttribute Book book, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("books", book);
@@ -68,6 +70,7 @@ public class BookController {
         return "redirect:/books";
     }
     @GetMapping("/books/{id}/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteBook(@PathVariable("id") Long id) {
         bookService.deleteBook(id);
         return "redirect:/books";

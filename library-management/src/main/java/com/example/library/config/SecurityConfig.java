@@ -23,7 +23,10 @@ public class SecurityConfig {
                             .requestMatchers("/books").authenticated()
                             .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                             .requestMatchers("/login").permitAll()
+                            .requestMatchers("/registration").permitAll()
                             .requestMatchers("/books/new").hasRole("ADMIN")
+                            .requestMatchers("/books/{id}/edit").hasRole("ADMIN")
+                            .requestMatchers("/books/{id}/delete").hasRole("ADMIN")
                             .anyRequest().authenticated();
                 })
                 .formLogin(form -> {
