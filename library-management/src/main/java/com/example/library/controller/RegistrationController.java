@@ -16,12 +16,12 @@ public class RegistrationController {
         return "registration";
     }
 
-//    @PostMapping("/registration")
-//    public String processRegistration(User user, BindingResult result) {
-//
-//        if (result.hasErrors()) {
-//            return "registration";
-//        }
-//        return "redirect:/login";
-//    }
+    @PostMapping("/registration")
+    public String processRegistration(User user, BindingResult result) {
+
+        if (result.hasErrors()) {
+            return "registration";
+        }
+        return "redirect:/login";
+    }
 }
