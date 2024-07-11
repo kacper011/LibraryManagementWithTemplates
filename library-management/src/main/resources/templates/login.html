@@ -7,16 +7,23 @@
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <style>
         body {
-            background: linear-gradient(to right, #6a11cb, #2575fc);
+            background: linear-gradient(to right, #6a11cb, #2575fc), url('/images/bgc.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
             font-family: 'Arial', sans-serif;
             color: #fff;
+            height: 100vh; /* Ustawienie wysokości całej strony */
+            margin: 0; /* Usunięcie marginesów */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .login-form {
             width: 360px;
-            margin: 100px auto;
             padding: 40px 30px;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.8); /* Przezroczystość tła formularza */
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             color: #333;
@@ -44,16 +51,14 @@
             box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
         }
 
-        .btn-primary, .btn-secondary {
+        .btn-primary {
             border-radius: 20px;
             padding: 10px 15px;
             font-size: 16px;
             font-weight: bold;
-        }
-
-        .btn-primary {
             background-color: #6a11cb;
             border-color: #6a11cb;
+            width: 100%;
         }
 
         .btn-primary:hover {
@@ -61,20 +66,10 @@
             border-color: #2575fc;
         }
 
-        .btn-secondary {
-            background-color: #ced4da;
-            border-color: #ced4da;
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            background-color: #adb5bd;
-            border-color: #adb5bd;
-        }
-
         .text-danger {
             margin-top: 15px;
             font-size: 14px;
+            text-align: center;
         }
     </style>
 </head>
@@ -83,23 +78,21 @@
     <h2>Library Login</h2>
     <form th:action="@{/login}" method="post">
         <div class="form-group">
-            <input type="text" class="form-control" name="username"
-                   placeholder="Login" required autofocus/>
+            <input type="text" class="form-control" name="username" placeholder="Login" required autofocus/>
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" name="password"
-                   placeholder="Password" required/>
+            <input type="password" class="form-control" name="password" placeholder="Password" required/>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+            <button type="submit" class="btn btn-primary">Log in</button>
         </div>
-        <p class="text-center text-danger" th:if="${param.error != null}">
+        <p class="text-danger" th:if="${param.error != null}">
             Invalid login or password.
         </p>
     </form>
     <div class="text-center">
         <p>Don't have an account?</p>
-        <a th:href="@{/registration}" class="btn btn-secondary btn-block">Register</a>
+        <a th:href="@{/registration}" class="btn btn-secondary">Register</a>
     </div>
 </div>
 </body>

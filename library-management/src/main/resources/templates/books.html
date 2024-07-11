@@ -6,22 +6,66 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <style>
     body {
-      background-color: #f8f9fa;
+      background-image: url('/images/bgc.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: 'Arial', sans-serif;
+      color: #fff;
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
+
+    .navbar {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      z-index: 1000;
+    }
+
     .navbar-brand {
       font-size: 1.5rem;
       font-weight: bold;
     }
+
     h1 {
-      margin-top: 20px;
+      margin-top: 40px;
       margin-bottom: 20px;
     }
+
     .table thead {
       background-color: #343a40;
       color: white;
     }
+
     .btn-primary {
       margin-right: 5px;
+    }
+
+    .bg-success {
+      background-color: #d4edda !important;
+    }
+
+    .bg-danger {
+      background-color: #f8d7da !important;
+    }
+
+    .actions-column {
+      white-space: nowrap;
+      width: 1%;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      color: #333;
+      margin-top: 80px;
     }
   </style>
 </head>
@@ -41,7 +85,6 @@
     </div>
   </div>
 </nav>
-<br />
 
 <div class="container">
   <div class="row">
@@ -58,15 +101,15 @@
           <th>Title</th>
           <th>Author</th>
           <th>Available</th>
-          <th>Actions</th>
+          <th class="actions-column">Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="book : ${books}">
           <td th:text="${book.title}"></td>
           <td th:text="${book.author}"></td>
-          <td th:text="${book.isAvailable}"></td>
-          <td>
+          <td th:text="${book.isAvailable}" th:class="${book.isAvailable == 'dostępna'} ? 'bg-success' : 'bg-danger'"></td>
+          <td class="actions-column">
             <a class="btn btn-primary btn-sm" th:href="@{/books/{id}/edit(id=${book.id})}" sec:authorize="hasRole('ROLE_ADMIN')">Edit</a>
             <a class="btn btn-danger btn-sm" th:href="@{/books/{id}/delete(id=${book.id})}" sec:authorize="hasRole('ROLE_ADMIN')">Delete</a>
             <a class="btn btn-info btn-sm" th:href="@{/books/{id}/view(id=${book.id})}">View</a>
