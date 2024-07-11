@@ -15,4 +15,8 @@ public interface BookService {
     void updateStudent(Book book);
 
     void deleteBook(Long id);
+
+    void rentBook(Long id);
+
+    void returnBook(Long id);
 }

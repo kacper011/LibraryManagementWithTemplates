@@ -70,6 +70,8 @@
             <a class="btn btn-primary btn-sm" th:href="@{/books/{id}/edit(id=${book.id})}" sec:authorize="hasRole('ROLE_ADMIN')">Edit</a>
             <a class="btn btn-danger btn-sm" th:href="@{/books/{id}/delete(id=${book.id})}" sec:authorize="hasRole('ROLE_ADMIN')">Delete</a>
             <a class="btn btn-info btn-sm" th:href="@{/books/{id}/view(id=${book.id})}">View</a>
+            <a class="btn btn-primary btn-sm" th:href="@{/books/{id}/rent(id=${book.id})}">Rent</a>
+            <a class="btn btn-primary btn-sm" th:href="@{/books/{id}/return(id=${book.id})}">Return</a>
           </td>
         </tr>
         </tbody>

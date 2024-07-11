@@ -45,5 +45,19 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(id);
     }
 
+    @Override
+    public void rentBook(Long id) {
+        Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+        book.setIsAvailable("wypożyczona");
+        bookRepository.save(book);
+    }
+
+    @Override
+    public void returnBook(Long id) {
+        Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+        book.setIsAvailable("dostępna");
+        bookRepository.save(book);
+    }
+
 
 }

@@ -82,4 +82,16 @@ public class BookController {
         model.addAttribute("book", book);
         return "view_book";
     }
+
+    @GetMapping("books/{id}/rent")
+    public String rentBook(@PathVariable("id") Long id) {
+        bookService.rentBook(id);
+        return "redirect:/books";
+    }
+
+    @GetMapping("books/{id}/return")
+    public String returnBook(@PathVariable("id") Long id) {
+        bookService.returnBook(id);
+        return "redirect:/books";
+    }
 }
