@@ -8,56 +8,61 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
   <style>
+    html, body {
+      height: 100%;
+    }
 
-        html, body {
-          height: 100%;
-        }
+    body {
+      background-image: url('/images/bgc.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: 'Arial', sans-serif;
+      color: #333;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
 
-        body {
-          background-image: url('/images/bgc.jpg');
-          background-size: cover;
-          background-repeat: no-repeat;
-          background-position: center;
-          font-family: 'Arial', sans-serif;
-          color: #333;
-          margin: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-direction: column;
-         }
+    .navbar {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      z-index: 1000;
+    }
 
-         .navbar {
-            width: 100%;
-             position: fixed;
-            top: 0;
-            z-index: 1000;
-         }
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        .card {
-            margin-top: 20px;
-            border: 1px solid rgba(0, 0, 0, 0.125);
-            border-radius: 0.25rem;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-        }
-        .card-header {
-            background-color: #343a40;
-            color: white;
-            padding: 1rem;
-        }
-        .card-body {
-            padding: 1.25rem;
-        }
-    </style>
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .card {
+      margin-top: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      background-color: rgba(255, 255, 255, 0.8); /* Białe tło z 80% przezroczystością */
+    }
+
+    .card-header {
+      background-color: rgba(52, 58, 64, 0.8); /* Kolor tła nagłówka z 80% przezroczystością */
+      color: white;
+      padding: 1rem;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+    }
+  </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/books">Library Management System</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
