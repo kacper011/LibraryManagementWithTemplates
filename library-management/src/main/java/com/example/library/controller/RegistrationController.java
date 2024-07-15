@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class RegistrationController {
 
-//    @GetMapping("/registration")
-//    public String showRegistrationForm(Model model) {
+    @GetMapping("/registration")
+    public String showRegistrationForm(Model model) {
 //        model.addAttribute("user", new User());
-//        return "registration";
-//    }
+        return "redirect:/login";
+    }
 //
 //    @PostMapping("/registration")
 //    public String processRegistration(User user, BindingResult result) {
