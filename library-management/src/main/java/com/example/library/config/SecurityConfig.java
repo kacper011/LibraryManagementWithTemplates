@@ -1,5 +1,6 @@
 package com.example.library.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,11 +10,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -66,6 +72,21 @@ public class SecurityConfig {
 
         return manager;
     }
+
+//    @Bean
+//    public JdbcUserDetailsManager jdbcUserDetailsManager() {
+//        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager();
+//        jdbcUserDetailsManager.setDataSource(dataSource);
+//        jdbcUserDetailsManager.setUsersByUsernameQuery(
+//                "SELECT name, password " +
+//                        "FROM users " +
+//                        "WHERE name = ?");
+//        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+//                "SELECT name, name " +
+//                        "FROM user_roles " +
+//                        "WHERE name = ?");
+//        return jdbcUserDetailsManager;
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
