@@ -59,10 +59,10 @@ public class SecurityConfig {
                 .password(passwordEncoder().encode("admin"))
                 .roles("ADMIN")
                 .build());
-        manager.createUser(User.withUsername("Kacper")
-                .password(passwordEncoder().encode("kacper123"))
-                .roles("USER")
-                .build());
+//        manager.createUser(User.withUsername("Kacper")
+//                .password(passwordEncoder().encode("kacper123"))
+//                .roles("USER")
+//                .build());
 
         return manager;
     }

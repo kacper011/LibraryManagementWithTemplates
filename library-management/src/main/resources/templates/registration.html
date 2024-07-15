@@ -1,97 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Library Registration</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <style>
-        body {
-            background: linear-gradient(to right, #6a11cb, #2575fc);
-            font-family: 'Arial', sans-serif;
-            color: #fff;
-        }
-
-        .registration-form {
-            width: 360px;
-            margin: 100px auto;
-            padding: 40px 30px;
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            color: #333;
-        }
-
-        .registration-form h2 {
-            margin-bottom: 30px;
-            font-weight: 600;
-            color: #333333;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-control {
-            border-radius: 20px;
-            padding: 10px 15px;
-            border: 1px solid #ced4da;
-        }
-
-        .form-control:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
-        }
-
-        .btn-primary {
-            background-color: #6a11cb;
-            border-color: #6a11cb;
-            border-radius: 20px;
-            padding: 10px 15px;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .btn-primary:hover {
-            background-color: #2575fc;
-            border-color: #2575fc;
-        }
-
-        .text-danger {
-            margin-top: 15px;
-            font-size: 14px;
-        }
-    </style>
+    <title>Registration</title>
 </head>
 <body>
-<div class="registration-form">
-    <h2>Library Registration</h2>
-    <form th:action="@{/register}" method="post">
-        <div class="form-group">
-            <input type="text" class="form-control" name="name" placeholder="Name" required autofocus th:field="*{name}"/>
-            <p th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></p>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control" name="username" placeholder="Username" required th:field="*{username}"/>
-            <p th:if="${#fields.hasErrors('username')}" class="text-danger" th:errors="*{username}"></p>
-        </div>
-        <div class="form-group">
-            <input type="email" class="form-control" name="email" placeholder="Email" required th:field="*{email}"/>
-            <p th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"></p>
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" name="password" placeholder="Password" required th:field="*{password}"/>
-            <p th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}"></p>
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" required th:field="*{confirmPassword}"/>
-            <p th:if="${#fields.hasErrors('confirmPassword')}" class="text-danger" th:errors="*{confirmPassword}"></p>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Register</button>
-        </div>
-    </form>
-</div>
+<h2>Registration Form</h2>
+<form action="/registration" method="post" th:object="${user}">
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" th:field="*{name}" required>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" th:field="*{email}" required>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" th:field="*{password}" required>
+    </div>
+    <button type="submit">Register</button>
+</form>
 </body>
 </html>
