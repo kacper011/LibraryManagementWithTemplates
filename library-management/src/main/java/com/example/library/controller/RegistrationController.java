@@ -1,7 +1,9 @@
 package com.example.library.controller;
 
+
 import com.example.library.model.User;
 import com.example.library.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +29,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String registerUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
+    public String registerUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         // Logika walidacji i zapisu użytkownika
         if (bindingResult.hasErrors()) {
             return "registration"; // Powrót do formularza rejestracji z błędami
