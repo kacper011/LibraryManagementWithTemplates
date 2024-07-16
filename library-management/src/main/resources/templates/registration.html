@@ -3,23 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url('/images/bgc.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            width: 360px;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+
+        .form-container h2 {
+            margin-bottom: 30px;
+            font-weight: 600;
+            color: #333333;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-control {
+            border-radius: 20px;
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+        }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+        }
+
+        .btn-primary {
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #6a11cb;
+            border-color: #6a11cb;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: #2575fc;
+            border-color: #2575fc;
+        }
+
+        .text-center {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-<h2>Registration Form</h2>
-<form action="/registration" method="post" th:object="${user}">
-    <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" th:field="*{name}" required>
+<div class="form-container">
+    <h2>Registration</h2>
+    <form action="/registration" method="post" th:object="${user}">
+        <div class="form-group">
+            <input type="text" class="form-control" id="name" name="name" th:field="*{name}" placeholder="Name" required>
+        </div>
+        <div class="form-group">
+            <input type="email" class="form-control" id="email" name="email" th:field="*{email}" placeholder="Email" required>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" id="password" name="password" th:field="*{password}" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <div class="text-center">
+        <p>Do you already have an account?</p>
+        <a th:href="@{/login}" class="btn btn-secondary">Login</a>
     </div>
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" th:field="*{email}" required>
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" th:field="*{password}" required>
-    </div>
-    <button type="submit">Register</button>
-</form>
+</div>
 </body>
 </html>
