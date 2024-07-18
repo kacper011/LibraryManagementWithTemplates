@@ -28,7 +28,7 @@ public class SecurityConfig {
                     authorize
                             .requestMatchers("/books").authenticated()
                             .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                            .requestMatchers("/login").permitAll()
+                            .requestMatchers("/login", "/login-error").permitAll()
                             .requestMatchers("/registration").permitAll()
                             .requestMatchers("/books/new").hasRole("ADMIN")
                             .requestMatchers("/books/{id}/edit").hasRole("ADMIN")
@@ -82,9 +82,9 @@ public class SecurityConfig {
                         "FROM users " +
                         "WHERE name = ?");
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-                "SELECT name, name " +
-                        "FROM user_roles " +
-                        "WHERE user_id = ?");
+                "SELECT u.name, r.name " +
+                        "FROM user_roles ur " +
+                        "WHERE u.name = ?");
         return jdbcUserDetailsManager;
     }
 
