@@ -15,7 +15,8 @@
       background-repeat: no-repeat;
       background-position: center;
       font-family: 'Arial', sans-serif;
-      color: #333;
+      color: #fff;
+      height: 100%;
       margin: 0;
       display: flex;
       justify-content: center;
@@ -29,28 +30,39 @@
       top: 0;
       z-index: 1000;
     }
+
     .navbar-brand {
       font-size: 1.5rem;
       font-weight: bold;
     }
+
+    .card {
+      margin-top: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      max-width: 600px; /* Ograniczenie szerokości karty */
+      margin: auto; /* Automatyczne centrowanie */
+      background-color: rgba(255, 255, 255, 0.8); /* Białe tło z 80% przezroczystością */
+    }
+
     .card-header {
-      background-color: #343a40;
+      background-color: rgba(52, 58, 64, 0.8); /* Kolor tła nagłówka z 80% przezroczystością */
       color: white;
+      padding: 1rem;
     }
-    h2 {
-      margin: 0;
+
+    .card-body {
+      padding: 1.25rem;
     }
+
     .form-label {
       font-weight: bold;
+      color: black; /* Kolor tekstu etykiety */
     }
-    .btn-primary {
-      width: 100%;
-    }
-    .text-danger {
-      font-size: 0.875rem;
-    }
-    .container {
-      margin-top: 20px;
+
+    .form-group {
+      margin-bottom: 1.5rem;
     }
   </style>
 </head>
@@ -71,37 +83,32 @@
     </div>
   </div>
 </nav>
-<br /><br />
 
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header text-center">
-          <h2>Create Book</h2>
+<div class="container text-center">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="text-center">Create Book</h2>
+    </div>
+    <div class="card-body">
+      <form method="post" role="form" th:action="@{/books}" th:object="${book}">
+        <div class="form-group mb-3">
+          <label class="form-label" for="title">Book Title</label>
+          <input class="form-control" id="title" name="title" placeholder="Enter book title" type="text" th:field="*{title}">
+          <p th:if="${#fields.hasErrors('title')}" class="text-danger" th:errors="*{title}"></p>
         </div>
-        <div class="card-body">
-          <form method="post" role="form" th:action="@{/books}" th:object="${book}">
-            <div class="form-group mb-3">
-              <label for="title" class="form-label">Book Title</label>
-              <input class="form-control" id="title" name="title" placeholder="Enter book title" type="text" th:field="*{title}">
-              <p th:if="${#fields.hasErrors('title')}" class="text-danger" th:errors="*{title}"></p>
-            </div>
 
-            <div class="form-group mb-3">
-              <label for="author" class="form-label">Book Author</label>
-              <input class="form-control" id="author" name="author" placeholder="Enter book author" type="text" th:field="*{author}">
-              <p th:if="${#fields.hasErrors('author')}" class="text-danger" th:errors="*{author}"></p>
-            </div>
-
-            <div class="form-group mb-3">
-              <label for="isAvailable" class="form-label">Book Available</label>
-              <input class="form-control" id="isAvailable" name="isAvailable" placeholder="Is the book available?" type="text" th:field="*{isAvailable}" readonly>
-            </div>
-            <button class="btn btn-primary" type="submit">Submit</button>
-          </form>
+        <div class="form-group mb-3">
+          <label class="form-label" for="author">Book Author</label>
+          <input class="form-control" id="author" name="author" placeholder="Enter book author" type="text" th:field="*{author}">
+          <p th:if="${#fields.hasErrors('author')}" class="text-danger" th:errors="*{author}"></p>
         </div>
-      </div>
+
+        <div class="form-group mb-3">
+          <label class="form-label" for="isAvailable">Book Available</label>
+          <input class="form-control" id="isAvailable" name="isAvailable" placeholder="Is the book available?" type="text" th:field="*{isAvailable}" readonly>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
     </div>
   </div>
 </div>

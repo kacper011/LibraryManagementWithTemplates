@@ -52,41 +52,41 @@ public class SecurityConfig {
     }
 
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-//
-//
-//        manager.createUser(User.withUsername("user")
-//                .password(passwordEncoder().encode("user"))
+    @Bean
+    public UserDetailsService userDetailsService() {
+        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+
+
+        manager.createUser(User.withUsername("user")
+                .password(passwordEncoder().encode("user"))
+                .roles("USER")
+                .build());
+        manager.createUser(User.withUsername("admin")
+                .password(passwordEncoder().encode("admin"))
+                .roles("ADMIN")
+                .build());
+//        manager.createUser(User.withUsername("Kacper")
+//                .password(passwordEncoder().encode("kacper123"))
 //                .roles("USER")
 //                .build());
-//        manager.createUser(User.withUsername("admin")
-//                .password(passwordEncoder().encode("admin"))
-//                .roles("ADMIN")
-//                .build());
-////        manager.createUser(User.withUsername("Kacper")
-////                .password(passwordEncoder().encode("kacper123"))
-////                .roles("USER")
-////                .build());
-//
-//        return manager;
-//    }
 
-    @Bean
-    public JdbcUserDetailsManager jdbcUserDetailsManager() {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager();
-        jdbcUserDetailsManager.setDataSource(dataSource);
-        jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "SELECT name, password " +
-                        "FROM users " +
-                        "WHERE name = ?");
-        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-                "SELECT u.name, r.name " +
-                        "FROM user_roles ur " +
-                        "WHERE u.name = ?");
-        return jdbcUserDetailsManager;
+        return manager;
     }
+
+//    @Bean
+//    public JdbcUserDetailsManager jdbcUserDetailsManager() {
+//        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager();
+//        jdbcUserDetailsManager.setDataSource(dataSource);
+//        jdbcUserDetailsManager.setUsersByUsernameQuery(
+//                "SELECT name, password " +
+//                        "FROM users " +
+//                        "WHERE name = ?");
+//        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+//                "SELECT u.name, r.name " +
+//                        "FROM user_roles ur " +
+//                        "WHERE u.name = ?");
+//        return jdbcUserDetailsManager;
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
