@@ -30,14 +30,14 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String registerUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        // Logika walidacji i zapisu użytkownika
+
         if (bindingResult.hasErrors()) {
-            return "registration"; // Powrót do formularza rejestracji z błędami
+            return "registration";
         }
 
-        // Zapis użytkownika za pomocą UserService
+
         userService.saveUser(user);
 
-        return "redirect:/login"; // Przekierowanie na stronę logowania po udanej rejestracji
+        return "redirect:/login";
     }
 }

@@ -45,7 +45,7 @@ public class SecurityConfig {
                     logout
                             .permitAll();
                 })
-                .csrf().disable(); // Wyłączenie CSRF dla testów - w produkcji powinno być włączone!
+                .csrf().disable();
 
         return http.build();
 
@@ -65,10 +65,6 @@ public class SecurityConfig {
                 .password(passwordEncoder().encode("admin"))
                 .roles("ADMIN")
                 .build());
-//        manager.createUser(User.withUsername("Kacper")
-//                .password(passwordEncoder().encode("kacper123"))
-//                .roles("USER")
-//                .build());
 
         return manager;
     }
