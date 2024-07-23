@@ -1,54 +1,38 @@
 package com.example.library.service.impl;
 
+import com.example.library.exception.ResourceNotFoundException;
 import com.example.library.model.Role;
 import com.example.library.model.User;
+import com.example.library.repository.RoleRepository;
 import com.example.library.repository.UserRepository;
 import com.example.library.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
     @Override
     public void saveUser(User user) {
+        Role userRole = roleRepository.findByName("USER")
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+        user.setRoles(Set.of(userRole));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-    }
-
-    @Override
-    public UserDetails loadUserByName(String name) throws UsernameNotFoundException {
-
-        User user = userRepository.findByName(name);
-
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-
-        for (Role role : user.getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
-        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), grantedAuthorities);
-
     }
 }
