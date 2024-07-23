@@ -1,25 +1,28 @@
 package com.example.library.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.library.exception.ResourceNotFoundException;
+import com.example.library.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
-import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
-    @Autowired
-    private DataSource dataSource;
+    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -54,35 +57,30 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
 
+        return username -> {
+            var user = userRepository.findByName(username)
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        manager.createUser(User.withUsername("user")
-                .password(passwordEncoder().encode("user"))
-                .roles("USER")
-                .build());
-        manager.createUser(User.withUsername("admin")
-                .password(passwordEncoder().encode("admin"))
-                .roles("ADMIN")
-                .build());
+            var grantedAuthorities = user.getRoles().stream()
+                    .map(role -> new SimpleGrantedAuthority(role.getName()))
+                    .toList();
 
-        return manager;
+            return new User(user.getName(), user.getPassword(), grantedAuthorities);
+
+        };
+    }
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
     }
 
-//    @Bean
-//    public JdbcUserDetailsManager jdbcUserDetailsManager() {
-//        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager();
-//        jdbcUserDetailsManager.setDataSource(dataSource);
-//        jdbcUserDetailsManager.setUsersByUsernameQuery(
-//                "SELECT name, password " +
-//                        "FROM users " +
-//                        "WHERE name = ?");
-//        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-//                "SELECT u.name, r.name " +
-//                        "FROM user_roles ur " +
-//                        "WHERE u.name = ?");
-//        return jdbcUserDetailsManager;
-//    }
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
