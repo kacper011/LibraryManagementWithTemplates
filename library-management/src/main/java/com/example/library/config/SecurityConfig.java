@@ -18,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.stream.Collectors;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -64,7 +66,7 @@ public class SecurityConfig {
 
             var grantedAuthorities = user.getRoles().stream()
                     .map(role -> new SimpleGrantedAuthority(role.getName()))
-                    .toList();
+                    .collect(Collectors.toSet());
 
             return new User(user.getName(), user.getPassword(), grantedAuthorities);
 
