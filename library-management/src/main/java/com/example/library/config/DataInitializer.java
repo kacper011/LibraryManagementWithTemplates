@@ -26,10 +26,10 @@ public class DataInitializer {
     public CommandLineRunner commandLineRunner() {
         return args -> {
             if (userRepository.findByName("admin").isEmpty()) {
-                Role adminRole = roleRepository.findByName("ADMIN")
+                Role adminRole = roleRepository.findByName("ROLE_ADMIN")
                         .orElseGet(() -> {
                             Role newAdminRole = new Role();
-                            newAdminRole.setName("ADMIN");
+                            newAdminRole.setName("ROLE_ADMIN");
                             return roleRepository.save(newAdminRole);
                         });
 
