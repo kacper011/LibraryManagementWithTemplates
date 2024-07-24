@@ -15,6 +15,7 @@ Aplikacja webowa do zarządzania biblioteką, umożliwiająca zarządzanie ksią
 - HTML
 - Bootstrap
 - MySQL
+- Docker
 
 ## Pobranie projektu
 Najpierw musisz uzyskać adres URL repozytorium, które chcesz pobrać. Możesz to zrobić na stronie repozytorium GitHuba, klikając przycisk "Code" (zazwyczaj zielony przycisk) i kopiując adres URL HTTPS.
