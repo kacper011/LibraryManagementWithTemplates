@@ -28,11 +28,8 @@ git clone https://github.com/kacper011/LibraryManagementWithTemplates.git
 
 Po zakończeniu procesu git clone, możesz przejść do katalogu repozytorium na swoim komputerze i sprawdzić, czy wszystkie pliki zostały pomyślnie pobrane.
 
-Po włączeniu aplikacji, należy przejść do przeglądarki i wpisać adres localhost:8080/books. Od razu przekieruje nas na stronę localhost:8080/login, musimy się zalogować używając jednego z dwóch kont: 
-Login: user
-Password: user
-
-
+Po włączeniu aplikacji, należy przejść do przeglądarki i wpisać adres localhost:8080/books. Od razu przekieruje nas na stronę localhost:8080/login, musimy zarejestrować się, jeśli nie mamy jeszcze konta.
+Istnieje już konto z rolą admina: 
 Login: admin
-Password: admin.
+Hasło: adminPassword
 
