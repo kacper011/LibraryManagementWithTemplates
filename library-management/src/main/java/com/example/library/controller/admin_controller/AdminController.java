@@ -1,4 +1,4 @@
-package com.example.library.controller;
+package com.example.library.controller.admin_controller;
 
 import com.example.library.model.Book;
 import com.example.library.service.BookService;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-public class BookController {
+public class AdminController {
 
 
     private BookService bookService;
 
-    public BookController(BookService bookService) {
+    public AdminController(BookService bookService) {
         this.bookService = bookService;
     }
 
