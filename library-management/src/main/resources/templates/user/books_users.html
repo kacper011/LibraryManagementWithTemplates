@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <title>Library Management System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <style>
+
+    body {
+      background-image: url('/images/bgc.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      font-family: 'Arial', sans-serif;
+      color: #fff;
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .navbar {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    h1 {
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+
+    .table thead {
+      background-color: #343a40;
+      color: white;
+    }
+
+    .btn-primary {
+      margin-right: 5px;
+    }
+
+    .bg-success {
+      background-color: #d4edda !important;
+    }
+
+    .bg-danger {
+      background-color: #f8d7da !important;
+    }
+
+    .actions-column {
+      white-space: nowrap;
+      width: 1%;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      color: #333;
+      margin-top: 80px;
+    }
+
+    .btn-disabled {
+      pointer-events: none;
+      opacity: 0.65;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/books">Library Management System</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1 class="text-center">List of Books</h1>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col">
+      <table class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Available</th>
+          <th class="actions-column">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+          <td th:text="${book.title}"></td>
+          <td th:text="${book.author}"></td>
+          <td th:text="${book.isAvailable}" th:classappend="${book.isAvailable == 'dostępna'} ? ' bg-success' : ' bg-danger'"></td>
+          <td class="actions-column">
+            <a class="btn btn-info btn-sm" th:href="@{/books/{id}/view(id=${book.id})}">View</a>
+            <a class="btn btn-primary btn-sm rent-btn" th:href="@{/books/{id}/rent(id=${book.id})}" th:classappend="${book.isAvailable == 'wypożyczona'} ? ' btn-disabled' : ''">Rent</a>
+            <a class="btn btn-primary btn-sm return-btn" th:href="@{/books/{id}/return(id=${book.id})}" th:classappend="${book.isAvailable == 'dostępna'} ? ' btn-disabled' : ''">Return</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMF8jYln/NU6Pp3O8jsLxga4q9UWB/jv7Z0n3G1R7rBXgSIBHF6wr06Jz3M" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.rent-btn, .return-btn').forEach(function(button) {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const href = this.getAttribute('href');
+        fetch(href)
+          .then(response => {
+            if (response.ok) {
+              location.reload();
+            } else {
+              alert('An error occurred. Please try again.');
+            }
+          })
+          .catch(error => {
+            alert('An error occurred. Please try again.');
+          });
+      });
+    });
+  });
+</script>
+</body>
+</html>

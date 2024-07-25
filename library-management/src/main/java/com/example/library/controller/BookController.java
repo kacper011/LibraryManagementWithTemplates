@@ -25,7 +25,7 @@ public class BookController {
     public String getAllBooks(Model model) {
         List<Book> books = bookService.getAllBooks();
         model.addAttribute("books", books);
-        return "books";
+        return "admin/books";
     }
 
     @GetMapping("/books/new")
@@ -33,7 +33,7 @@ public class BookController {
     public String addBook(Model model) {
         Book book = new Book();
         model.addAttribute("book", book);
-        return "create_book";
+        return "admin/create_book";
     }
 
     @PostMapping("/books")
@@ -53,7 +53,7 @@ public class BookController {
     public String editBook(@PathVariable("id") Long id, Model model) {
         Book book = bookService.getBookById(id);
         model.addAttribute("book", book);
-        return "edit_book";
+        return "admin/edit_book";
     }
 
     @PostMapping("/books/{id}")
