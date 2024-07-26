@@ -44,6 +44,8 @@ public class BooksController {
         }
     }
 
+    //ROLE_ADMIN
+
     @GetMapping("/books_admin")
     @PreAuthorize("hasRole('ADMIN')")
     public String getBooksAdmin(Model model) {
@@ -51,8 +53,6 @@ public class BooksController {
         model.addAttribute("books", books);
         return "books_admin";
     }
-
-
 
 
     @GetMapping("/books/new")
@@ -101,6 +101,20 @@ public class BooksController {
         bookService.deleteBook(id);
         return "redirect:/books";
     }
+
+    //ROLE USER
+
+    @GetMapping("/books_user")
+    @PreAuthorize("hasRole('USER')")
+    public String getBooksUsers(Model model) {
+        List<Book> books = bookService.getAllBooks();
+        model.addAttribute("books", books);
+        return "books_user";
+    }
+
+
+
+
 
     @GetMapping("/books/{id}/view")
     public String viewBook(@PathVariable("id") Long id, Model model) {

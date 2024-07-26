@@ -33,7 +33,8 @@ public class SecurityConfig {
         http
                 .authorizeRequests(authorize -> {
                     authorize
-                            .requestMatchers("books_admin", "books_user").authenticated()
+                            .requestMatchers("/books_admin").hasRole("ADMIN")
+                            .requestMatchers("/books_user").hasRole("USER")
                             .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                             .requestMatchers("/login", "/login-error").permitAll()
                             .requestMatchers("/registration").permitAll()
@@ -74,6 +75,7 @@ public class SecurityConfig {
 
         };
     }
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
