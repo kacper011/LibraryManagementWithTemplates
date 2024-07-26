@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final UserRepository userRepository;
 
     @Bean
@@ -31,7 +33,7 @@ public class SecurityConfig {
         http
                 .authorizeRequests(authorize -> {
                     authorize
-                            .requestMatchers("/books").authenticated()
+                            .requestMatchers("books_admin", "books_user").authenticated()
                             .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                             .requestMatchers("/login", "/login-error").permitAll()
                             .requestMatchers("/registration").permitAll()
@@ -43,7 +45,7 @@ public class SecurityConfig {
                 .formLogin(form -> {
                     form
                             .loginPage("/login")
-                            .defaultSuccessUrl("/books", true)
+                            .successHandler(customAuthenticationSuccessHandler)
                             .permitAll();
                 })
                 .logout(logout -> {
