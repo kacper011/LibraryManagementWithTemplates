@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void saveUser(User user) {
-        Role userRole = roleRepository.findByName("USER")
+        Role userRole = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
         user.setRoles(Set.of(userRole));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
