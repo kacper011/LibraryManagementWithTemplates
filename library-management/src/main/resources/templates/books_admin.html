@@ -88,9 +88,15 @@
           <a class="nav-link active" aria-current="page" th:href="@{/books/new}" sec:authorize="hasRole('ROLE_ADMIN')">New Book</a>
         </li>
       </ul>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
+
 
 <div class="container">
   <div class="row">
