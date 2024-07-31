@@ -113,9 +113,6 @@ public class BooksController {
     }
 
 
-
-
-
     @GetMapping("/books/{id}/view")
     public String viewBook(@PathVariable("id") Long id, Model model) {
         Book book = bookService.getBookById(id);

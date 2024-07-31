@@ -28,6 +28,8 @@ public class Book {
     private String author;
     @Column(nullable = false)
     private String isAvailable = "dostępna";
+    @Column(columnDefinition = "TEXT")
+    private String summary;
 
 
 }
