@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 
 
 @Getter
@@ -30,6 +31,7 @@ public class Book {
     private String isAvailable = "dostępna";
     @Column(columnDefinition = "TEXT")
     private String summary;
-
+    @OneToMany(mappedBy = "book")
+    private List<Rental> rentals;
 
 }

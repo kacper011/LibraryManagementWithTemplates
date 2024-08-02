@@ -1,0 +1,18 @@
+package com.example.library.repository;
+
+import com.example.library.model.Book;
+import com.example.library.model.Rental;
+import com.example.library.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface RentalRepository extends JpaRepository<Rental, Long> {
+    List<Rental> findByUser(User user);
+
+    Optional<Object> findByBookAndUser(Book book, User user);
+
+    List<Rental> findByUserId(Long id);
+
+}

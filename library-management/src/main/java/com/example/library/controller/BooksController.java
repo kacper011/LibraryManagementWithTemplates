@@ -1,15 +1,27 @@
 package com.example.library.controller;
 
+import com.example.library.exception.ResourceNotFoundException;
 import com.example.library.model.Book;
+import com.example.library.model.Rental;
+import com.example.library.model.User;
+import com.example.library.repository.UserRepository;
 import com.example.library.service.BookService;
+import com.example.library.service.RentalService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -18,8 +30,14 @@ public class BooksController {
 
     private BookService bookService;
 
-    public BooksController(BookService bookService) {
+    private RentalService rentalService;
+
+    private UserRepository userRepository;
+
+    public BooksController(BookService bookService, RentalService rentalService, UserRepository userRepository) {
         this.bookService = bookService;
+        this.rentalService = rentalService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/books")
@@ -119,16 +137,31 @@ public class BooksController {
         model.addAttribute("book", book);
         return "view_book";
     }
+    @Secured("ROLE_USER")
+    @GetMapping("/{id}/rent")
+    public String rentBook(@PathVariable("id") Long bookId, @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userRepository.findByName(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-    @GetMapping("books/{id}/rent")
-    public String rentBook(@PathVariable("id") Long id) {
-        bookService.rentBook(id);
-        return "redirect:/books";
+        rentalService.rentBook(bookId, user.getId());
+        return "redirect:/books_user";
     }
+    @Secured("ROLE_USER")
+    @GetMapping("/{id}/return")
+    public String returnBook(@PathVariable("id") Long bookId, @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userRepository.findByName(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-    @GetMapping("books/{id}/return")
-    public String returnBook(@PathVariable("id") Long id) {
-        bookService.returnBook(id);
-        return "redirect:/books";
+        rentalService.returnBook(bookId, user.getId());
+        return "redirect:/books_user";
+    }
+    @GetMapping("/my_books")
+    public String listMyBooks(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        User user = userRepository.findByName(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        List<Rental> rentals = rentalService.findRentalsByUser(user.getId());
+        model.addAttribute("rentals", rentals);
+        return "my_books";
     }
 }
