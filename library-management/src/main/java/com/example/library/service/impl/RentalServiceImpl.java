@@ -8,11 +8,12 @@ import com.example.library.repository.BookRepository;
 import com.example.library.repository.RentalRepository;
 import com.example.library.repository.UserRepository;
 import com.example.library.service.RentalService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class RentalServiceImpl implements RentalService {
@@ -52,6 +53,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
+    @Transactional
     public void returnBook(Long bookId, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -59,17 +61,21 @@ public class RentalServiceImpl implements RentalService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
 
-        Rental rental = (Rental) rentalRepository.findByBookAndUser(book, user)
-                .orElseThrow(() -> new ResourceNotFoundException("Rental not found"));
+        Rental rental = rentalRepository.findByBookAndUser(book, user)
+                .stream()
+                .filter(r -> r.getReturnDate() == null)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("No active rental record found for this book and user"));
 
-        LocalDateTime now = LocalDateTime.now().withSecond(0).withNano(0);
+        if (rental.getReturnDate() != null) {
+            throw new IllegalStateException("The book has already been returned");
+        }
 
+        rental.setReturnDate(LocalDateTime.now().withSecond(0).withNano(0));
+        rentalRepository.save(rental);
 
         book.setIsAvailable("dostępna");
         bookRepository.save(book);
-
-        rental.setReturnDate(now);
-        rentalRepository.save(rental);
     }
 
     @Override
