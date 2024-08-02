@@ -42,6 +42,8 @@ public class SecurityConfig {
                             .requestMatchers("/books/{id}/edit").hasRole("ADMIN")
                             .requestMatchers("/books/{id}/delete").hasRole("ADMIN")
                             .requestMatchers("/my_books").hasRole("USER")
+                            .requestMatchers("/books/{id}/rent").hasRole("USER")
+                            .requestMatchers("/books/{id}/return").hasRole("USER")
                             .anyRequest().authenticated();
                 })
                 .formLogin(form -> {

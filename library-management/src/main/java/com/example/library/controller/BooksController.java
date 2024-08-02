@@ -138,24 +138,25 @@ public class BooksController {
         return "view_book";
     }
     @Secured("ROLE_USER")
-    @GetMapping("/{id}/rent")
+    @GetMapping("/books/{id}/rent")
     public String rentBook(@PathVariable("id") Long bookId, @AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByName(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         rentalService.rentBook(bookId, user.getId());
-        return "redirect:/books_user";
+        return "redirect:/my_books";
     }
     @Secured("ROLE_USER")
-    @GetMapping("/{id}/return")
+    @GetMapping("/books/{id}/return")
     public String returnBook(@PathVariable("id") Long bookId, @AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByName(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         rentalService.returnBook(bookId, user.getId());
-        return "redirect:/books_user";
+        return "redirect:/my_books";
     }
     @GetMapping("/my_books")
+    @PreAuthorize("hasRole('USER')")
     public String listMyBooks(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userRepository.findByName(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
