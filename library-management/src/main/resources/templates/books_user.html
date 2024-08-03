@@ -14,6 +14,8 @@
       color: #fff;
       height: 100%;
       margin: 0;
+      display: flex;
+      flex-direction: column;
     }
 
     .navbar {
@@ -33,9 +35,39 @@
       margin-bottom: 20px;
     }
 
+    .container {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      color: #333;
+      margin-top: 80px; /* Adjusted for fixed navbar height */
+      width: 100%;
+      max-width: 1200px; /* Adjusted max-width for larger screens */
+      box-sizing: border-box;
+    }
+
+    .table {
+      width: 100%;
+      table-layout: fixed; /* Ensure columns do not overflow */
+    }
+
     .table thead {
       background-color: #343a40;
       color: white;
+    }
+
+    .table td, .table th {
+      text-align: center; /* Center align text in table cells */
+      overflow: hidden; /* Prevent overflow */
+      text-overflow: ellipsis; /* Ellipsis for overflowed text */
+      white-space: nowrap; /* Prevent text wrapping */
+    }
+
+    .actions-column {
+      width: 150px; /* Adjusted width for actions column */
+      white-space: nowrap; /* Prevent text wrapping in actions column */
+      text-align: center; /* Center align text in actions column */
     }
 
     .btn-primary {
@@ -48,20 +80,6 @@
 
     .bg-danger {
       background-color: #f8d7da !important;
-    }
-
-    .actions-column {
-      white-space: nowrap;
-      width: 1%;
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.8);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-      color: #333;
-      margin-top: 80px; /* Adjusted for fixed navbar height */
     }
 
     .btn-disabled {
@@ -150,4 +168,6 @@
 </script>
 </body>
 </html>
+
+
 
