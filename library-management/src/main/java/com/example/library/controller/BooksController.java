@@ -147,7 +147,7 @@ public class BooksController {
         return "redirect:/my_books";
     }
     @Secured("ROLE_USER")
-    @GetMapping("/books/{id}/return")
+    @PostMapping("/books/{id}/return")
     public String returnBook(@PathVariable("id") Long bookId, @AuthenticationPrincipal UserDetails userDetails) {
         User user = userRepository.findByName(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));

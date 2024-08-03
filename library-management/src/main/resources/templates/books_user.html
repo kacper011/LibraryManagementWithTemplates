@@ -118,7 +118,6 @@
           <td class="actions-column">
             <a class="btn btn-info btn-sm" th:href="@{/books/{id}/view(id=${book.id})}">View</a>
             <a class="btn btn-primary btn-sm" th:href="@{/books/{id}/rent(id=${book.id})}" th:classappend="${book.isAvailable == 'wypożyczona'} ? 'btn-disabled' : ''">Rent</a>
-            <a class="btn btn-primary btn-sm" th:href="@{/books/{id}/return(id=${book.id})}" th:classappend="${book.isAvailable == 'dostępna'} ? 'btn-disabled' : ''">Return</a>
           </td>
         </tr>
         </tbody>
