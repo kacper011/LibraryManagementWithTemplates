@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -162,6 +163,7 @@ public class BooksController {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         List<Rental> rentals = rentalService.findRentalsByUser(user.getId());
+        Collections.reverse(rentals);
         model.addAttribute("rentals", rentals);
         return "my_books";
     }
