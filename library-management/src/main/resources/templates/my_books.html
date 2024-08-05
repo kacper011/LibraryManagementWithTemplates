@@ -64,6 +64,9 @@
 
     .table thead {
       background-color: #343a40;
+    }
+
+    .table thead th.title-header {
       color: white;
     }
 
@@ -128,11 +131,11 @@
         <table class="table table-striped table-hover table-bordered">
           <thead>
           <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Rental Date</th>
-            <th>Return Date</th>
-            <th class="small-column">Return Book</th>
+            <th class="title-header">Title</th>
+            <th class="title-header">Author</th>
+            <th class="title-header">Rental Date</th>
+            <th class="title-header">Return Date</th>
+            <th class="small-column title-header">Return Book</th>
           </tr>
           </thead>
           <tbody>
@@ -142,8 +145,9 @@
             <td th:text="${rental.rentalDate}"></td>
             <td th:text="${rental.returnDate != null ? rental.returnDate : 'Not returned yet'}"></td>
             <td class="small-column">
-              <form th:action="@{/books/{id}/return(id=${rental.book.id})}" method="post">
-                <button type="submit" class="btn btn-primary btn-sm" th:classappend="${rental.returnDate != null ? 'btn-disabled' : ''}">Return</button>
+              <span th:if="${rental.returnDate != null}">Returned</span>
+              <form th:action="@{/books/{id}/return(id=${rental.book.id})}" method="post" th:if="${rental.returnDate == null}">
+                <button type="submit" class="btn btn-primary btn-sm">Return</button>
               </form>
             </td>
           </tr>
@@ -157,6 +161,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMF8jYln/NU6Pp3O8jsLxga4q9UWB/jv7Z0n3G1R7rBXgSIBHF6wr06Jz3M" crossorigin="anonymous"></script>
 </body>
 </html>
+
+
+
 
 
 
