@@ -91,6 +91,14 @@
       pointer-events: none;
       opacity: 0.65;
     }
+
+    .bg-success-custom {
+      background-color: #d4edda; /* Bootstrap's bg-success color */
+    }
+
+    .bg-danger-custom {
+      background-color: #f8d7da; /* Bootstrap's bg-danger color */
+    }
   </style>
 </head>
 <body>
@@ -139,7 +147,8 @@
           </tr>
           </thead>
           <tbody>
-          <tr th:each="rental : ${rentals}">
+          <tr th:each="rental : ${rentals}"
+              th:classappend="${rental.returnDate != null ? 'bg-success-custom' : 'bg-danger-custom'}">
             <td th:text="${rental.book.title}"></td>
             <td th:text="${rental.book.author}"></td>
             <td th:text="${rental.rentalDate}"></td>
