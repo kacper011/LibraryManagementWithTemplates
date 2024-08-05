@@ -36,7 +36,7 @@
 
     .container {
       background: rgba(255, 255, 255, 0.8);
-      padding: 20px;
+      padding: 30px;
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
       color: #333;
@@ -45,11 +45,19 @@
       box-sizing: border-box;
       position: relative;
       z-index: 1;
-      margin-top: 80px;
+      margin-top: 100px;
     }
 
-    .form-group label {
-      font-weight: bold;
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+      background-color: #f8f9fa;
+    }
+
+    .btn-primary {
+      margin-top: 20px;
     }
 
     .content {
@@ -89,28 +97,26 @@
 <div class="content">
   <div class="container">
     <h1 class="text-center">My Account</h1>
-    <div class="row">
-      <div class="col">
-        <form>
-          <div class="form-group">
-            <label for="username">Name</label>
-            <input type="text" class="form-control" id="username" th:value="${username}" readonly>
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" th:value="${email}" readonly>
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" th:value="${password}" readonly>
-          </div>
-        </form>
+    <form>
+      <div class="form-group">
+        <label for="username">Name</label>
+        <input type="text" class="form-control" id="username" th:value="${username}" readonly>
       </div>
-    </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" th:value="${email}" readonly>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" th:value="${password}" placeholder="********" readonly>
+      </div>
+      <button type="button" class="btn btn-primary">Edit Profile</button>
+    </form>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMF8jYln/NU6Pp3O8jsLxga4q9UWB/jv7Z0n3G1R7rBXgSIBHF6wr06Jz3M" crossorigin="anonymous"></script>
 </body>
 </html>
+
 
