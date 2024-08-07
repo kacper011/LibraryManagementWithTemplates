@@ -93,11 +93,11 @@
     }
 
     .bg-success-custom {
-      background-color: #d4edda; /* Bootstrap's bg-success color */
+      background-color: #d4edda;
     }
 
     .bg-danger-custom {
-      background-color: #f8d7da; /* Bootstrap's bg-danger color */
+      background-color: #f8d7da;
     }
   </style>
 </head>
@@ -156,9 +156,7 @@
             <td class="small-column">
               <div th:if="${rental.returnDate != null}">
                 <span>Returned</span>
-                <form th:action="@{/books/{id}/delete(id=${rental.book.id})}" method="post" style="display:inline;">
-                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                </form>
+                <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">Delete</button>
               </div>
               <div th:if="${rental.returnDate == null}">
                 <form th:action="@{/books/{id}/return(id=${rental.book.id})}" method="post" style="display:inline;">
@@ -175,8 +173,17 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMF8jYln/NU6Pp3O8jsLxga4q9UWB/jv7Z0n3G1R7rBXgSIBHF6wr06Jz3M" crossorigin="anonymous"></script>
+<script>
+  function deleteRow(button) {
+    // Get the row containing the button
+    var row = button.closest('tr');
+    // Remove the row from the table
+    row.remove();
+  }
+</script>
 </body>
 </html>
+
 
 
 
