@@ -47,21 +47,19 @@ public class BooksController {
         List<Book> books = bookService.getAllBooks();
         model.addAttribute("books", books);
 
-        String name = "Guest";
+        String username = "Guest";
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserDetails) {
                 UserDetails userDetails = (UserDetails) principal;
-                name = userDetails.getUsername();
-            } else if (principal instanceof User) {
-                User user = (User) principal;
-                name = user.getName();
+                username = userDetails.getUsername();
             } else {
-                name = principal.toString();
+                username = principal.toString();
             }
         }
 
-        model.addAttribute("username", name);
+
+        model.addAttribute("username", username);
 
         boolean hasAdminRole = authentication.getAuthorities()
                 .stream()
