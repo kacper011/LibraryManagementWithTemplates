@@ -3,6 +3,7 @@ package com.example.library.config;
 import com.example.library.exception.ResourceNotFoundException;
 import com.example.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +12,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,8 +26,10 @@ import java.util.stream.Collectors;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    @Bean
+    public CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
+    }
     private final UserRepository userRepository;
 
     @Bean
@@ -47,20 +51,20 @@ public class SecurityConfig {
                             .requestMatchers("/my_account").hasRole("USER")
                             .anyRequest().authenticated();
                 })
-                .formLogin(form -> {
-                    form
-                            .loginPage("/login")
-                            .successHandler(customAuthenticationSuccessHandler)
-                            .permitAll();
-                })
-                .logout(logout -> {
-                    logout
-                            .permitAll();
-                })
-                .csrf().disable();
-
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .successHandler(customAuthenticationSuccessHandler())
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .permitAll()
+                )
+                .csrf().disable()
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .sessionFixation().none()
+                );
         return http.build();
-
     }
 
 
@@ -79,6 +83,7 @@ public class SecurityConfig {
 
         };
     }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

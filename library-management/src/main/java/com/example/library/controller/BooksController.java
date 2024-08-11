@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,22 +43,20 @@ public class BooksController {
     @GetMapping("/books")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public String getAllBooks(Model model, Authentication authentication) {
+
         List<Book> books = bookService.getAllBooks();
         model.addAttribute("books", books);
 
-        String username = "Guest";
-        if (authentication != null) {
+        if (authentication != null && authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
+            String username = "Guest";
             if (principal instanceof UserDetails) {
-                UserDetails userDetails = (UserDetails) principal;
-                username = userDetails.getUsername();
+                username = ((UserDetails) principal).getUsername();
             } else {
                 username = principal.toString();
             }
+            model.addAttribute("username", username);
         }
-
-
-        model.addAttribute("username", username);
 
         boolean hasAdminRole = authentication.getAuthorities()
                 .stream()
