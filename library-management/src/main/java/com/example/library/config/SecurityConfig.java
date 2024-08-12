@@ -26,31 +26,29 @@ import java.util.stream.Collectors;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final UserRepository userRepository;
+
     @Bean
     public CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler() {
         return new CustomAuthenticationSuccessHandler();
     }
-    private final UserRepository userRepository;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests(authorize -> {
-                    authorize
-                            .requestMatchers("/books_admin/**").hasRole("ADMIN")
-                            .requestMatchers("/books_user").hasRole("USER")
-                            .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                            .requestMatchers("/login", "/login-error").permitAll()
-                            .requestMatchers("/registration").permitAll()
-                            .requestMatchers("/books/new").hasRole("ADMIN")
-                            .requestMatchers("/books/{id}/edit").hasRole("ADMIN")
-                            .requestMatchers("/books/{id}/delete").hasRole("ADMIN")
-                            .requestMatchers("/my_books").hasRole("USER")
-                            .requestMatchers("/books/{id}/rent").hasRole("USER")
-                            .requestMatchers("/books/{id}/return").hasRole("USER")
-                            .requestMatchers("/my_account").hasRole("USER")
-                            .anyRequest().authenticated();
-                })
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/login", "/login-error", "/registration").permitAll()
+                        .requestMatchers("/books_admin/**").hasRole("ADMIN")
+                        .requestMatchers("/my_books", "/books_user", "/books/{id}/rent", "/books/{id}/return", "/my_account").hasRole("USER") // Dla użytkowników
+                        .anyRequest().authenticated()
+                )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .successHandler(customAuthenticationSuccessHandler())
@@ -67,10 +65,8 @@ public class SecurityConfig {
         return http.build();
     }
 
-
     @Bean
     public UserDetailsService userDetailsService() {
-
         return username -> {
             var user = userRepository.findByName(username)
                     .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -79,11 +75,9 @@ public class SecurityConfig {
                     .map(role -> new SimpleGrantedAuthority(role.getName()))
                     .collect(Collectors.toSet());
 
-            return new User(user.getName(), user.getPassword(), grantedAuthorities);
-
+            return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), grantedAuthorities);
         };
     }
-
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -92,18 +86,9 @@ public class SecurityConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-
-
-
-
 }
