@@ -136,9 +136,15 @@ public class BooksController {
 
     @GetMapping("/books_user")
     @PreAuthorize("hasRole('USER')")
-    public String getBooksUsers(Model model) {
+    public String getBooksUsers(@AuthenticationPrincipal UserDetails userDetails,  Model model) {
         List<Book> books = bookService.getAllBooks();
         model.addAttribute("books", books);
+
+        User user = userRepository.findByName(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        model.addAttribute("username", user.getName());
+
         return "books_user";
     }
 
@@ -175,7 +181,11 @@ public class BooksController {
 
         List<Rental> rentals = rentalService.findRentalsByUser(user.getId());
         Collections.reverse(rentals);
+
+        model.addAttribute("username", user.getName());
+
         model.addAttribute("rentals", rentals);
+
         return "my_books";
     }
 }
