@@ -12,7 +12,9 @@ import org.springframework.ui.Model;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,6 +43,16 @@ class BooksControllerTest {
 
         assertEquals("books_admin", viewName);
         verify(model).addAttribute("books", books);
+    }
+
+
+    @Test
+    public void addBookTest() {
+        String viewName = booksController.addBook(model);
+
+        assertEquals("create_book_admin", viewName);
+
+        verify(model).addAttribute(eq("book"), any(Book.class));
     }
 
 }
