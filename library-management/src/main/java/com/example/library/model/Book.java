@@ -34,4 +34,7 @@ public class Book {
     @OneToMany(mappedBy = "book")
     private List<Rental> rentals;
 
+    public Book(long l, String s, String s1) {
+
+    }
 }
