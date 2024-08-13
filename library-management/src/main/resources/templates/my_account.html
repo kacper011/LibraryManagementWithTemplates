@@ -122,26 +122,28 @@
 <div class="content">
   <div class="container">
     <h1 class="text-center">My Account</h1>
-    <form>
+    <form action="/my_account/update_email" method="post">
       <div class="form-group">
         <label for="username">Name</label>
         <input type="text" class="form-control" id="username" th:value="${username}" readonly>
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" th:value="${email}" readonly>
+        <input type="email" class="form-control" id="email" name="email" th:value="${email}" readonly>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
         <div class="input-group">
-          <input type="password" class="form-control" id="password" th:value="${password}" readonly>
+          <input type="password" class="form-control" id="password" name="password" th:value="${password}" readonly>
           <span class="input-group-text" onclick="togglePassword()">Show/Hide</span>
         </div>
       </div>
       <button type="button" class="btn btn-primary" onclick="enableEdit()">Edit Profile</button>
+      <button type="submit" class="btn btn-success" style="display: none;" id="saveChanges">Save Changes</button>
     </form>
   </div>
 </div>
+
 
 <script>
   function togglePassword() {
@@ -157,6 +159,7 @@
     document.getElementById('username').removeAttribute('readonly');
     document.getElementById('email').removeAttribute('readonly');
     document.getElementById('password').removeAttribute('readonly');
+    document.getElementById('saveChanges').style.display = 'inline-block';
   }
 </script>
 

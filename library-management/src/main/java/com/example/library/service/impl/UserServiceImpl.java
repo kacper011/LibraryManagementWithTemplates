@@ -32,4 +32,13 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public void updateEmail(Long id, String newEmail) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        user.setEmail(newEmail);
+        userRepository.save(user);
+    }
+
 }

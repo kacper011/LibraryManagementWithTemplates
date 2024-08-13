@@ -6,4 +6,6 @@ import com.example.library.model.User;
 public interface UserService {
 
     void saveUser(User user);
+
+    void updateEmail(Long id, String newEmail);
 }
