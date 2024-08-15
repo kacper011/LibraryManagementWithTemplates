@@ -26,4 +26,19 @@ class LoginControllerTest {
                 .andExpect(view().name("login"));
     }
 
+    @Test
+    public void loginErrorTest() {
+
+        //Given
+        LoginController controller = new LoginController();
+
+        //When
+        String viewName = controller.loginError();
+
+        //Then
+        assertEquals("login-error", viewName);
+
+
+    }
+
 }
