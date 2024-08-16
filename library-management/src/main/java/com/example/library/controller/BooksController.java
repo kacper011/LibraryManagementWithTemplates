@@ -188,4 +188,16 @@ public class BooksController {
 
         return "my_books";
     }
+
+    @PostMapping("/my_books/{rentalId}/hide")
+    @PreAuthorize("hasRole('USER')")
+    public String hideRental(@PathVariable Long rentalId, @AuthenticationPrincipal UserDetails userDetails) {
+
+        User user = userRepository.findByName(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        rentalService.hideRental(rentalId);
+
+        return "redirect:/my_books";
+    }
 }

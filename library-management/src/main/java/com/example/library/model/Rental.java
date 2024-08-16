@@ -26,5 +26,6 @@ public class Rental {
 
     private LocalDateTime rentalDate;
     private LocalDateTime returnDate;
+    private boolean hidden = false;
 
 }

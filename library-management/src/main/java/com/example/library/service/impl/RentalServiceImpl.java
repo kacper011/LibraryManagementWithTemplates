@@ -80,7 +80,15 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     public List<Rental> findRentalsByUser(Long id) {
-        return rentalRepository.findByUserId(id);
+        return rentalRepository.findByUser_IdAndHiddenFalse(id);
+    }
+
+    @Override
+    public void hideRental(Long rentalId) {
+        Rental rental = rentalRepository.findById(rentalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Rental not found"));
+        rental.setHidden(true);
+        rentalRepository.save(rental);
     }
 
 

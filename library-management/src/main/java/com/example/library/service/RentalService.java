@@ -13,5 +13,6 @@ public interface RentalService {
 
     List<Rental> findRentalsByUser(Long id);
 
+    void hideRental(Long rentalId);
 
 }

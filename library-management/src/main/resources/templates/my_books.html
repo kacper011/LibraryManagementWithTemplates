@@ -159,7 +159,9 @@
             <td class="small-column">
               <div th:if="${rental.returnDate != null}">
                 <span>Returned</span>
-                <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">Delete</button>
+                <form th:action="@{/my_books/{rentalId}/hide(rentalId=${rental.id})}" method="post" style="display:inline;">
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
               </div>
               <div th:if="${rental.returnDate == null}">
                 <form th:action="@{/books/{id}/return(id=${rental.book.id})}" method="post" style="display:inline;">
@@ -168,6 +170,7 @@
               </div>
             </td>
           </tr>
+
           </tbody>
         </table>
       </div>
