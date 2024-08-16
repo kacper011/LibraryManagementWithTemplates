@@ -3,6 +3,7 @@ package com.example.library.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,4 +31,8 @@ public class User {
     private Set<Role> roles;
     @OneToMany(mappedBy = "user")
     private List<Rental> rentals;
+
+    public <E> User(String alice, HashSet<E> roleUser) {
+
+    }
 }

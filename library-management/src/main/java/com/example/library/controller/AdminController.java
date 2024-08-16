@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Controller
@@ -23,9 +24,11 @@ public class AdminController {
 
 
         var userDtos = users.stream()
-                .map(user -> new UserDto(user.getName(), user.getRoles().stream()
-                        .map(role -> role.getName().replace("ROLE_", ""))
-                        .collect(Collectors.toSet())))
+                .map(user -> new UserDto(
+                        user.getName(),
+                        (user.getRoles() != null ? user.getRoles().stream()
+                            .map(role -> role.getName().replace("ROLE_", ""))
+                            .collect(Collectors.toSet()) : Collections.emptySet())))
                 .collect(Collectors.toList());
 
         model.addAttribute("users", userDtos);
