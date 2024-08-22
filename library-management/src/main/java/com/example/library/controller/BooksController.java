@@ -16,10 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -136,8 +133,18 @@ public class BooksController {
 
     @GetMapping("/books_user")
     @PreAuthorize("hasRole('USER')")
-    public String getBooksUsers(@AuthenticationPrincipal UserDetails userDetails,  Model model) {
-        List<Book> books = bookService.getAllBooks();
+    public String getBooksUsers(@AuthenticationPrincipal UserDetails userDetails,
+                                @RequestParam(value = "title", required = false) String title,
+                                Model model) {
+        List<Book> books;
+
+        if (title != null && !title.isEmpty()) {
+            books = bookService.searchBooksByTitle(title);
+            model.addAttribute("searchQuery", title);
+        } else {
+            books = bookService.getAllBooks();
+        }
+
         model.addAttribute("books", books);
 
         User user = userRepository.findByName(userDetails.getUsername())
