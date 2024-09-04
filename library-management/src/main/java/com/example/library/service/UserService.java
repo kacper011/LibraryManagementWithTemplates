@@ -8,4 +8,7 @@ public interface UserService {
     void saveUser(User user);
 
     void updateEmail(Long id, String newEmail);
+    void updateUsername(Long id, String newUsername);
+    void updatePassword(Long id, String newPassword);
+    void updateProfil(Long id, String newUsername, String newEmail, String newPassword);
 }

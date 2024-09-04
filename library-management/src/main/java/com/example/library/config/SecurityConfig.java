@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/login", "/login-error", "/registration").permitAll()
                         .requestMatchers("/books_admin/**").hasRole("ADMIN")
-                        .requestMatchers("/my_books", "/books_user", "/books/{id}/rent", "/books/{id}/return", "/my_account/**").hasRole("USER")
+                        .requestMatchers("/my_books/**", "/books_user", "/books/{id}/rent", "/books/{id}/return", "/my_account/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

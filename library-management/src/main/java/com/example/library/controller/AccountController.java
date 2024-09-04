@@ -4,7 +4,9 @@ import com.example.library.model.User;
 import com.example.library.repository.UserRepository;
 import com.example.library.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,20 +48,48 @@ public class AccountController {
         return "my_account";
     }
 
-    @PostMapping("/my_account/update_email")
-    public String updateEmail(@RequestParam("email") String newEmail, Authentication authentication) {
-        String username = authentication.getName();
-        Optional<User> user = userRepository.findByName(username);
+    @PostMapping("/my_account/update_profile")
+    public String updateProfile(@RequestParam("username") String newUsername,
+                                @RequestParam("email") String newEmail,
+                                @RequestParam("password") String newPassword,
+                                Authentication authentication) {
+        String currentUsername = authentication.getName();
+        Optional<User> userOptional = userRepository.findByName(currentUsername);
 
-        if (user.isPresent()) {
-            User user1 = user.get();
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            boolean updated = false;
 
-            userService.updateEmail(user1.getId(), newEmail);
+            if (!user.getName().equals(newUsername)) {
+                user.setName(newUsername);
+                updated = true;
+            }
+
+            if (!user.getEmail().equals(newEmail)) {
+                user.setEmail(newEmail);
+                updated = true;
+            }
+
+            if (!user.getPassword().equals(newPassword)) {
+                user.setPassword(newPassword);
+                updated = true;
+            }
+
+            if (updated) {
+                userRepository.save(user);
+            }
+
+            SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken(newUsername, authentication.getCredentials(), authentication.getAuthorities())
+            );
+
             return "redirect:/my_account?success";
         } else {
             return "redirect:/my_account?error";
         }
     }
+
+
 
     private String decodePassword(String encodedPassword) {
         return new String(Base64.getDecoder().decode(encodedPassword));

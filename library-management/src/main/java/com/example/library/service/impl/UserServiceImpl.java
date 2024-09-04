@@ -6,6 +6,7 @@ import com.example.library.model.User;
 import com.example.library.repository.RoleRepository;
 import com.example.library.repository.UserRepository;
 import com.example.library.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,55 @@ public class UserServiceImpl implements UserService {
 
         user.setEmail(newEmail);
         userRepository.save(user);
+    }
+
+    @Override
+    public void updateUsername(Long id, String newUsername) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        user.setName(newUsername);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updatePassword(Long id, String newPassword) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updateProfil(Long id, String newUsername, String newEmail, String newPassword) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        boolean updated = false;
+
+        if (!user.getName().equals(newUsername)) {
+            user.setName(newUsername);
+            updated = true;
+        }
+
+        if (!user.getEmail().equals(newEmail)) {
+            user.setEmail(newEmail);
+            updated = true;
+        }
+
+        if (!user.getPassword().equals(newPassword)) {
+            String encodedPassword = passwordEncoder.encode(newPassword);
+            user.setPassword(encodedPassword);
+            updated = true;
+        }
+
+        if (updated) {
+            userRepository.save(user);
+        }
+
     }
 
 }

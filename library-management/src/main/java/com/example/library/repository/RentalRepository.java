@@ -6,6 +6,7 @@ import com.example.library.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findByUser(User user);
@@ -16,4 +17,5 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
 
     List<Rental> findByUser_IdAndHiddenFalse(Long userId);
 
+    Optional<Rental> findByIdAndUserId(Long rentalId, Long id);
 }

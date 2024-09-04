@@ -12,12 +12,14 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 
@@ -133,11 +135,20 @@ public class BooksController {
 
     @GetMapping("/books_user")
     @PreAuthorize("hasRole('USER')")
-    public String getBooksUsers(@AuthenticationPrincipal UserDetails userDetails,
+    public String getBooksUsers(Principal principal,
                                 @RequestParam(value = "title", required = false) String title,
                                 Model model) {
-        List<Book> books;
 
+        if (principal == null) {
+            throw new IllegalStateException("Principal should not be null");
+        }
+
+        String username = principal.getName();
+        if (username == null) {
+            throw new IllegalStateException("Username should not be null");
+        }
+
+        List<Book> books;
         if (title != null && !title.isEmpty()) {
             books = bookService.searchBooksByTitle(title);
             model.addAttribute("searchQuery", title);
@@ -147,7 +158,7 @@ public class BooksController {
 
         model.addAttribute("books", books);
 
-        User user = userRepository.findByName(userDetails.getUsername())
+        User user = userRepository.findByName(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         model.addAttribute("username", user.getName());
@@ -156,55 +167,107 @@ public class BooksController {
     }
 
 
+
     @GetMapping("/books/{id}/view")
     public String viewBook(@PathVariable("id") Long id, Model model) {
         Book book = bookService.getBookById(id);
         model.addAttribute("book", book);
         return "view_book";
     }
+
+
+
     @Secured("ROLE_USER")
     @GetMapping("/books/{id}/rent")
-    public String rentBook(@PathVariable("id") Long bookId, @AuthenticationPrincipal UserDetails userDetails) {
-        User user = userRepository.findByName(userDetails.getUsername())
+    public String rentBook(@PathVariable("id") Long bookId, Principal principal) {
+        if (principal == null) {
+            throw new IllegalStateException("Principal should not be null");
+        }
+
+        String username = principal.getName();
+        if (username == null) {
+            throw new IllegalStateException("Username should not be null");
+        }
+
+        User user = userRepository.findByName(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         rentalService.rentBook(bookId, user.getId());
         return "redirect:/my_books";
     }
+
+
+
+
     @Secured("ROLE_USER")
     @PostMapping("/books/{id}/return")
-    public String returnBook(@PathVariable("id") Long bookId, @AuthenticationPrincipal UserDetails userDetails) {
-        User user = userRepository.findByName(userDetails.getUsername())
+    public String returnBook(@PathVariable("id") Long bookId, Principal principal) {
+        if (principal == null) {
+            throw new IllegalStateException("Principal should not be null");
+        }
+
+        String username = principal.getName();
+        if (username == null) {
+            throw new IllegalStateException("Username should not be null");
+        }
+
+        User user = userRepository.findByName(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         rentalService.returnBook(bookId, user.getId());
         return "redirect:/my_books";
     }
+
+
+
     @GetMapping("/my_books")
     @PreAuthorize("hasRole('USER')")
-    public String listMyBooks(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        User user = userRepository.findByName(userDetails.getUsername())
+    public String listMyBooks(Principal principal, Model model) {
+        if (principal == null) {
+            throw new IllegalStateException("Principal should not be null");
+        }
+
+        String username = principal.getName();
+        if (username == null) {
+            throw new IllegalStateException("Username should not be null");
+        }
+
+        User user = userRepository.findByName(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         List<Rental> rentals = rentalService.findRentalsByUser(user.getId());
         Collections.reverse(rentals);
 
         model.addAttribute("username", user.getName());
-
         model.addAttribute("rentals", rentals);
 
         return "my_books";
     }
 
+
+
+
     @PostMapping("/my_books/{rentalId}/hide")
     @PreAuthorize("hasRole('USER')")
     public String hideRental(@PathVariable Long rentalId, @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            throw new IllegalStateException("User not logged in");
+        }
 
         User user = userRepository.findByName(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        SecurityContextHolder.getContext().setAuthentication(null);
+
+        Rental rental = rentalService.findRentalByIdAndUser(rentalId, user.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Rental not found"));
 
         rentalService.hideRental(rentalId);
 
         return "redirect:/my_books";
     }
+
+
+
+
 }

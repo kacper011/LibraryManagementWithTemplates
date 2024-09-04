@@ -4,6 +4,7 @@ import com.example.library.model.Rental;
 import com.example.library.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RentalService {
 
@@ -15,4 +16,5 @@ public interface RentalService {
 
     void hideRental(Long rentalId);
 
+    Optional<Rental> findRentalByIdAndUser(Long rentalId, Long id);
 }

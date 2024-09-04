@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -89,6 +90,11 @@ public class RentalServiceImpl implements RentalService {
                 .orElseThrow(() -> new ResourceNotFoundException("Rental not found"));
         rental.setHidden(true);
         rentalRepository.save(rental);
+    }
+
+    @Override
+    public Optional<Rental> findRentalByIdAndUser(Long rentalId, Long id) {
+        return  rentalRepository.findByIdAndUserId(rentalId, id);
     }
 
 
