@@ -249,15 +249,14 @@ public class BooksController {
 
     @PostMapping("/my_books/{rentalId}/hide")
     @PreAuthorize("hasRole('USER')")
-    public String hideRental(@PathVariable Long rentalId, @AuthenticationPrincipal UserDetails userDetails) {
-        if (userDetails == null) {
+    public String hideRental(@PathVariable Long rentalId, Principal principal) {
+        if (principal == null) {
             throw new IllegalStateException("User not logged in");
         }
 
-        User user = userRepository.findByName(userDetails.getUsername())
+        String username = principal.getName();
+        User user = userRepository.findByName(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        SecurityContextHolder.getContext().setAuthentication(null);
 
         Rental rental = rentalService.findRentalByIdAndUser(rentalId, user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Rental not found"));
