@@ -5,7 +5,6 @@
   <title>Library Management System</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <style>
-
     body {
       background-image: url('/images/bgc-library.jpg');
       background-size: cover;
@@ -20,46 +19,37 @@
       align-items: center;
       flex-direction: column;
     }
-
     .navbar {
       width: 100%;
       position: fixed;
       top: 0;
       z-index: 1000;
     }
-
     .navbar-brand {
       font-size: 1.5rem;
       font-weight: bold;
     }
-
     h1 {
       margin-top: 40px;
       margin-bottom: 20px;
     }
-
     .table thead {
       background-color: #343a40;
       color: white;
     }
-
     .btn-primary {
       margin-right: 5px;
     }
-
     .bg-success {
       background-color: #d4edda !important;
     }
-
     .bg-danger {
       background-color: #f8d7da !important;
     }
-
     .actions-column {
       white-space: nowrap;
       width: 1%;
     }
-
     .container {
       background: rgba(255, 255, 255, 0.8);
       padding: 20px;
@@ -68,7 +58,6 @@
       color: #333;
       margin-top: 80px;
     }
-
     .btn-disabled {
       pointer-events: none;
       opacity: 0.65;
@@ -100,7 +89,6 @@
   </div>
 </nav>
 
-
 <div class="container">
   <div class="row">
     <div class="col">
@@ -126,7 +114,7 @@
           <td th:text="${book.isAvailable}" th:classappend="${book.isAvailable == 'dostępna'} ? ' bg-success' : ' bg-danger'"></td>
           <td class="actions-column">
             <a class="btn btn-primary btn-sm" th:href="@{/books/{id}/edit(id=${book.id})}" sec:authorize="hasRole('ROLE_ADMIN')">Edit</a>
-            <a class="btn btn-danger btn-sm" th:href="@{/books/{id}/delete(id=${book.id})}" sec:authorize="hasRole('ROLE_ADMIN')">Delete</a>
+            <a class="btn btn-danger btn-sm delete-btn" th:data-status="${book.isAvailable}" th:href="@{/books/{id}/delete(id=${book.id})}" sec:authorize="hasRole('ROLE_ADMIN')">Delete</a>
             <a class="btn btn-info btn-sm" th:href="@{/books/{id}/view(id=${book.id})}">View</a>
           </td>
         </tr>
@@ -139,25 +127,24 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMF8jYln/NU6Pp3O8jsLxga4q9UWB/jv7Z0n3G1R7rBXgSIBHF6wr06Jz3M" crossorigin="anonymous"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.rent-btn, .return-btn').forEach(function(button) {
+    // Obsługa przycisków usuwania
+    document.querySelectorAll('.delete-btn').forEach(function(button) {
       button.addEventListener('click', function(event) {
-        event.preventDefault();
-        const href = this.getAttribute('href');
-        fetch(href)
-          .then(response => {
-            if (response.ok) {
-              location.reload();
-            } else {
-              alert('An error occurred. Please try again.');
-            }
-          })
-          .catch(error => {
-            alert('An error occurred. Please try again.');
-          });
+        const bookStatus = this.getAttribute('data-status');
+        if (bookStatus !== 'dostępna') {
+          event.preventDefault(); // Zatrzymaj domyślne działanie linku
+          alert('Nie można usunąć książki, która jest wypożyczona.');
+        } else {
+          // Kontynuuj z usunięciem książki
+          if (confirm('Czy na pewno chcesz usunąć tę książkę?')) {
+            window.location.href = this.getAttribute('href');
+          }
+        }
       });
     });
   });
 </script>
 </body>
 </html>
+
 

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.Collections;
@@ -126,10 +127,19 @@ public class BooksController {
     }
     @GetMapping("/books/{id}/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String deleteBook(@PathVariable("id") Long id) {
+    public String deleteBook(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        Book book = bookService.getBookById(id);
+
+        if ("wypożyczona".equalsIgnoreCase(book.getIsAvailable())) {
+            redirectAttributes.addFlashAttribute("error", "Nie można usunąć książki, która jest wypożyczona.");
+            return "redirect:/books";
+        }
+
         bookService.deleteBook(id);
         return "redirect:/books";
     }
+
+
 
     //ROLE USER
 
