@@ -127,16 +127,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMF8jYln/NU6Pp3O8jsLxga4q9UWB/jv7Z0n3G1R7rBXgSIBHF6wr06Jz3M" crossorigin="anonymous"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Obsługa przycisków usuwania
+
     document.querySelectorAll('.delete-btn').forEach(function(button) {
       button.addEventListener('click', function(event) {
         const bookStatus = this.getAttribute('data-status');
         if (bookStatus !== 'dostępna') {
-          event.preventDefault(); // Zatrzymaj domyślne działanie linku
-          alert('Nie można usunąć książki, która jest wypożyczona.');
+          event.preventDefault();
+          alert('You cannot delete a book that is on loan.');
         } else {
-          // Kontynuuj z usunięciem książki
-          if (confirm('Czy na pewno chcesz usunąć tę książkę?')) {
+
+          if (confirm('Are you sure you want to delete this book?')) {
             window.location.href = this.getAttribute('href');
           }
         }

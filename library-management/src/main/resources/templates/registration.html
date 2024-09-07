@@ -75,15 +75,20 @@
 <body>
 <div class="form-container">
     <h2>Registration</h2>
-    <form action="/registration" method="post" th:object="${user}">
+    <form action="/registration" method="post" th:object="${user}" id="registrationForm">
         <div class="form-group">
-            <input type="text" class="form-control" id="name" name="name" th:field="*{name}" placeholder="Name" required>
+            <input type="text" class="form-control" id="name" name="name" th:field="*{name}" placeholder="Name"
+                   pattern="^[A-Z][a-zA-Z]*"
+                   title="Name must start with a capital letter and contain only letters" required>
         </div>
         <div class="form-group">
-            <input type="email" class="form-control" id="email" name="email" th:field="*{email}" placeholder="Email" required>
+            <input type="email" class="form-control" id="email" name="email" th:field="*{email}" placeholder="Email"
+                   title="Please enter a valid email address" required>
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" id="password" name="password" th:field="*{password}" placeholder="Password" required>
+            <input type="password" class="form-control" id="password" name="password" th:field="*{password}"
+                   placeholder="Password" minlength="6"
+                   title="Password must be at least 6 characters long" required>
         </div>
         <button type="submit" class="btn btn-primary">Register</button>
     </form>
@@ -92,5 +97,6 @@
         <a th:href="@{/login}" class="btn btn-secondary">Login</a>
     </div>
 </div>
+
 </body>
 </html>

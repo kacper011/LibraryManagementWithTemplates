@@ -1,6 +1,8 @@
 package com.example.library.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.util.HashSet;
@@ -18,9 +20,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
+    @Pattern(regexp = "^[A-Z][a-zA-Z]*", message = "Name must start with a capital letter and contain only letters")
     private String name;
     @Column(nullable = false, unique = true)
+    @Email(message = "Email should be valid")
     private String email;
 
     @Column(nullable = false)
