@@ -99,7 +99,7 @@ public class BooksController {
 
         if (result.hasErrors()) {
             model.addAttribute("book", book);
-            return "create_book";
+            return "create_book_admin";
         }
 
         bookService.createBook(book);
