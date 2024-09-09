@@ -1,8 +1,12 @@
 package com.example.library.service.impl;
 
 import com.example.library.exception.ResourceNotFoundException;
+import com.example.library.model.Book;
+import com.example.library.model.Rental;
 import com.example.library.model.Role;
 import com.example.library.model.User;
+import com.example.library.repository.BookRepository;
+import com.example.library.repository.RentalRepository;
 import com.example.library.repository.RoleRepository;
 import com.example.library.repository.UserRepository;
 import com.example.library.service.UserService;
@@ -16,11 +20,15 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RentalRepository rentalRepository;
+    private final BookRepository bookRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RentalRepository rentalRepository, BookRepository bookRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.rentalRepository = rentalRepository;
+        this.bookRepository = bookRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -92,8 +100,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUserById(Long id) {
-        userRepository.deleteById(id);
+
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+
+        for (Rental rental : user.getRentals()) {
+            Book book = rental.getBook();
+            book.setIsAvailable("dostępna");
+            bookRepository.save(book);
+            rental.setUser(null);
+            rentalRepository.save(rental);
+        }
+
+        userRepository.delete(user);
     }
 
 }
