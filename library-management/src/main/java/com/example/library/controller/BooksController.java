@@ -11,8 +11,6 @@ import jakarta.validation.Valid;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +42,13 @@ public class BooksController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public String getAllBooks(Model model, Authentication authentication) {
 
+        // Log to check if authentication is null or not
+        if (authentication == null) {
+            System.out.println("Authentication is null");
+        } else {
+            System.out.println("Authentication is not null, user: " + authentication.getName());
+        }
+
         List<Book> books = bookService.getAllBooks();
         model.addAttribute("books", books);
 
@@ -55,6 +60,7 @@ public class BooksController {
             } else {
                 username = principal.toString();
             }
+            System.out.println("Username in controller: " + username);
             model.addAttribute("username", username);
         }
 
@@ -73,6 +79,7 @@ public class BooksController {
             return "access_denied";
         }
     }
+
 
     //ROLE_ADMIN
 

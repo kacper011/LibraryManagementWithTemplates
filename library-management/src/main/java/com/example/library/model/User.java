@@ -21,7 +21,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, unique = true)
-    @Pattern(regexp = "^[A-Z][a-zA-Z]*", message = "Name must start with a capital letter and contain only letters")
+    @Pattern(regexp = "^[A-Z][a-zA-Z0-9]*", message = "Name must start with a capital letter and contain only letters or digits")
     private String name;
     @Column(nullable = false, unique = true)
     @Email(message = "Email should be valid")
