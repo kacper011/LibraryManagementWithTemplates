@@ -7,12 +7,14 @@ Aplikacja webowa do zarządzania biblioteką, umożliwiająca zarządzanie ksią
 - Logowanie użytkowników.
 - Zarządzanie książkami: administrator może dodawać książki, edytować i usuwać.
 - Wypożyczanie i zwracanie książek: użytkownik ma opcję wypożyczenia, a następnie oddania książki.
-- Przeglądanie dostępności książek: użytkownik ma dostęp do całej listy książek, do wypożyczenia jak i do tych, które są w tej chwili wypożyczone.
+- Przeglądanie dostępności książek: użytkownik ma dostęp do całej listy książek, do dostępnych jak i do tych, które są w tej chwili wypożyczone.
 
 ## Technologie
 
 - Java
-- HTML
+- JavaScript
+- HTML5
+- CSS3
 - Bootstrap
 - MySQL
 - Docker
