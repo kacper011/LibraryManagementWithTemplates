@@ -144,7 +144,7 @@
       <div class="form-group">
         <label for="password">Password</label>
         <div class="input-group">
-          <input type="password" class="form-control" id="password" name="password" th:value="${password}" readonly>
+          <input type="password" class="form-control" id="password" name="password" disabled placeholder="Enter new password">
           <span class="input-group-text" onclick="togglePassword()">Show/Hide</span>
         </div>
       </div>
@@ -153,38 +153,26 @@
         <button type="submit" class="btn btn-success" style="display: none;" id="saveChanges">Save Changes</button>
       </div>
     </form>
+
   </div>
 </div>
 
 
 <script>
+  function enableEdit() {
+    // Enable the password field and show the save changes button
+    document.getElementById('password').disabled = false;
+    document.getElementById('saveChanges').style.display = 'block';
+  }
 
-function enableEdit() {
-
-    document.getElementById('username').removeAttribute('readonly');
-    document.getElementById('email').removeAttribute('readonly');
-    document.getElementById('password').removeAttribute('readonly');
-
-
-    document.getElementById('saveChanges').style.display = 'inline-block';
-
-
-    document.querySelector('.btn-primary').style.display = 'none';
-}
-
-
-function togglePassword() {
+  function togglePassword() {
     var passwordField = document.getElementById('password');
-    var passwordFieldType = passwordField.getAttribute('type');
-
-    if (passwordFieldType === 'password') {
-        passwordField.setAttribute('type', 'text');
-        this.textContent = 'Hide';
+    if (passwordField.type === 'password') {
+      passwordField.type = 'text';
     } else {
-        passwordField.setAttribute('type', 'password');
-        this.textContent = 'Show';
+      passwordField.type = 'password';
     }
-}
+  }
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMF8jYln/NU6Pp3O8jsLxga4q9UWB/jv7Z0n3G1R7rBXgSIBHF6wr06Jz3M" crossorigin="anonymous"></script>

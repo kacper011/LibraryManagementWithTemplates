@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ public class AccountController {
 
     private final UserRepository userRepository;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/my_account")
     public String myAccount(Model model, Principal principal) {
@@ -51,7 +53,7 @@ public class AccountController {
     @PostMapping("/my_account/update_profile")
     public String updateProfile(@RequestParam("username") String newUsername,
                                 @RequestParam("email") String newEmail,
-                                @RequestParam("password") String newPassword,
+                                @RequestParam(value = "password", required = false) String newPassword,
                                 Authentication authentication) {
         String currentUsername = authentication.getName();
         Optional<User> userOptional = userRepository.findByName(currentUsername);
@@ -70,8 +72,9 @@ public class AccountController {
                 updated = true;
             }
 
-            if (!user.getPassword().equals(newPassword)) {
-                user.setPassword(newPassword);
+
+            if (newPassword != null && !newPassword.isEmpty() && !passwordEncoder.matches(newPassword, user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(newPassword));
                 updated = true;
             }
 
@@ -79,9 +82,12 @@ public class AccountController {
                 userRepository.save(user);
             }
 
-            SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(newUsername, authentication.getCredentials(), authentication.getAuthorities())
-            );
+
+            if (!user.getName().equals(currentUsername)) {
+                SecurityContextHolder.getContext().setAuthentication(
+                        new UsernamePasswordAuthenticationToken(user.getName(), authentication.getCredentials(), authentication.getAuthorities())
+                );
+            }
 
             return "redirect:/my_account?success";
         } else {
