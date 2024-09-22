@@ -20,7 +20,7 @@ class RegistrationControllerTest {
 
         //Given
         UserService userService = Mockito.mock(UserService.class);
-        RegistrationController registrationController = new RegistrationController(userService);
+        RegistrationController registrationController = new RegistrationController(userService, rabbitTemplate);
         Model model = Mockito.mock(Model.class);
 
         //When

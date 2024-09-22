@@ -1,0 +1,25 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: email-receiver
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/email_receiver
+    username: root
+    password: Maverick.30
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+
+  rabbitmq:
+    addresses: amqps://lwmkzcjh:kYbiqPDJzDYo3bTRSX2l8P0I3RXqI3zt@cow.rmq2.cloudamqp.com/lwmkzcjh
+    username: lwmkzcjh
+    password: kYbiqPDJzDYo3bTRSX2l8P0I3RXqI3zt
+
