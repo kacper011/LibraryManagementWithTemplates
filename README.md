@@ -8,6 +8,8 @@ Aplikacja webowa do zarządzania biblioteką, umożliwiająca zarządzanie ksią
 - Zarządzanie książkami: administrator może dodawać książki, edytować i usuwać.
 - Wypożyczanie i zwracanie książek: użytkownik ma opcję wypożyczenia, a następnie oddania książki.
 - Przeglądanie dostępności książek: użytkownik ma dostęp do całej listy książek, do dostępnych jak i do tych, które są w tej chwili wypożyczone.
+- W momencie utworzenia nowego konta przez użytkownika, adres e-mail jest przesyłany do dedykowanej aplikacji email-receiver za pośrednictwem kolejki RabbitMQ. Proces ten zapewnia efektywne zarządzanie i przetwarzanie wiadomości.
+- Aplikacja email-receiver uruchamia się i odbiera z kolejki, a następnie zapisuje je w oddzielnej bazie danych. Dzięki temu system zapewnia niezawodne przechowywanie i dostęp do informacji o utworzonych kontach użytkowników.
 
 ## Technologie
 
@@ -18,6 +20,7 @@ Aplikacja webowa do zarządzania biblioteką, umożliwiająca zarządzanie ksią
 - Bootstrap
 - MySQL
 - Docker
+- RabbitMQ
 
 ## Pobranie projektu
 Najpierw musisz uzyskać adres URL repozytorium, które chcesz pobrać. Możesz to zrobić na stronie repozytorium GitHuba, klikając przycisk "Code" (zazwyczaj zielony przycisk) i kopiując adres URL HTTPS.
