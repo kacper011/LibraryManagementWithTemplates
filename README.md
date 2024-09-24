@@ -1,17 +1,16 @@
-# System Zarządzania Biblioteką
+<h1 align="center">Library Management System</h1>
 
-Aplikacja webowa do zarządzania biblioteką, umożliwiająca zarządzanie książkami, wypożyczanie i zwracanie oraz logowaniem użytkowników.
+A web application for managing a library, allowing users to manage books, borrow and return them, and handle user login.
+## Features
 
-## Funkcje
+- User Login: Allows users to log in to the system.
+- Book Management: Administrators can add, edit, and delete books.
+- Borrowing and Returning Books: Users can borrow and then return books.
+- Viewing Book Availability: Users have access to the entire list of books, including those currently borrowed and available.
+- New Account Creation: When a new account is created, the user's email address is sent to a dedicated email-receiver application via a RabbitMQ queue. This process ensures efficient management and processing of messages.
+- Email-Receiver Application: This application runs and retrieves messages from the queue, then saves them in a separate database. This ensures reliable storage and access to information about newly created user accounts.
 
-- Logowanie użytkowników.
-- Zarządzanie książkami: administrator może dodawać książki, edytować i usuwać.
-- Wypożyczanie i zwracanie książek: użytkownik ma opcję wypożyczenia, a następnie oddania książki.
-- Przeglądanie dostępności książek: użytkownik ma dostęp do całej listy książek, do dostępnych jak i do tych, które są w tej chwili wypożyczone.
-- W momencie utworzenia nowego konta przez użytkownika, adres e-mail jest przesyłany do dedykowanej aplikacji email-receiver za pośrednictwem kolejki RabbitMQ. Proces ten zapewnia efektywne zarządzanie i przetwarzanie wiadomości.
-- Aplikacja email-receiver uruchamia się i odbiera z kolejki, a następnie zapisuje je w oddzielnej bazie danych. Dzięki temu system zapewnia niezawodne przechowywanie i dostęp do informacji o utworzonych kontach użytkowników.
-
-## Technologie
+## Technologies
 
 - Java
 - JavaScript
@@ -22,19 +21,20 @@ Aplikacja webowa do zarządzania biblioteką, umożliwiająca zarządzanie ksią
 - Docker
 - RabbitMQ
 
-## Pobranie projektu
-Najpierw musisz uzyskać adres URL repozytorium, które chcesz pobrać. Możesz to zrobić na stronie repozytorium GitHuba, klikając przycisk "Code" (zazwyczaj zielony przycisk) i kopiując adres URL HTTPS.
-https://github.com/kacper011/LibraryManagementWithTemplates.git - bezpośredni link do repozytorium.
+## Project Download
+First, obtain the URL of the repository you want to download. You can do this by visiting the GitHub repository page, clicking the "Code" button (usually a green button), and copying the HTTPS URL. Here's the direct link to the repository: https://github.com/kacper011/LibraryManagementWithTemplates.git.
 
-Otwórz terminal lub wiersz poleceń na swoim komputerze.
+Open your terminal or command prompt on your computer.
 
-Użyj komendy git clone w terminalu, aby sklonować repozytorium z GitHuba. Składnia komendy jest następująca:
+Use the git clone command in the terminal to clone the repository from GitHub. The command syntax is as follows:
 git clone https://github.com/kacper011/LibraryManagementWithTemplates.git
 
-Po zakończeniu procesu git clone, możesz przejść do katalogu repozytorium na swoim komputerze i sprawdzić, czy wszystkie pliki zostały pomyślnie pobrane.
+After the git clone process is completed, you can navigate to the repository directory on your computer and verify that all files have been successfully downloaded.
 
-Po włączeniu aplikacji, należy przejść do przeglądarki i wpisać adres localhost:8080/books. Od razu przekieruje nas na stronę localhost:8080/login, musimy zarejestrować się, jeśli nie mamy jeszcze konta.
-Istnieje już konto z rolą admina: 
-Login: admin
-Hasło: adminPassword
+Once the application is launched, go to your browser and enter the address localhost:8080/books. You will be immediately redirected to localhost:8080/login. You must register if you don't already have an account.
+
+There is already an account with the admin role:
+
+Login: admin <br>
+Password: adminPassword
 
