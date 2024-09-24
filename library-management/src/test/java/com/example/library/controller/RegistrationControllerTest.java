@@ -3,7 +3,9 @@ package com.example.library.controller;
 import com.example.library.model.User;
 import com.example.library.service.UserService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.ui.Model;
@@ -14,6 +16,9 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest
 @AutoConfigureMockMvc
 class RegistrationControllerTest {
+
+    @Mock
+    private RabbitTemplate rabbitTemplate;
 
     @Test
     public void showRegistrationFormTest() {
