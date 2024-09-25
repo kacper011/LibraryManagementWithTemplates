@@ -129,7 +129,7 @@ public class BooksController {
         }
 
         book.setId(id);
-        bookService.updateStudent(book);
+        bookService.updateBook(book);
         return "redirect:/books";
     }
     @GetMapping("/books/{id}/delete")
