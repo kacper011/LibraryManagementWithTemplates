@@ -43,4 +43,17 @@ class BookServiceImplTest {
         verify(bookRepository, times(1)).findAll();
     }
 
+    @Test
+    public void testCreateBook() {
+
+        Book book = new Book();
+        book.setTitle("Test Book");
+        book.setAuthor("Test Author");
+        book.setIsAvailable("dostępna");
+
+        bookService.createBook(book);
+
+        verify(bookRepository, times(1)).save(book);
+    }
+
 }
