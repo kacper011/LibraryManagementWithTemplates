@@ -10,6 +10,8 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -54,6 +56,43 @@ class BookServiceImplTest {
         bookService.createBook(book);
 
         verify(bookRepository, times(1)).save(book);
+    }
+
+    @Test
+    public void testGetBookById() {
+        Long bookId = 1L;
+        Book book = new Book();
+        book.setId(bookId);
+        book.setTitle("Test Book");
+        book.setAuthor("Test Author");
+        book.setIsAvailable("dostępna");
+
+        when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
+
+        Book result = bookService.getBookById(bookId);
+
+        assertNotNull(result);
+
+        assertEquals(bookId, result.getId());
+        assertEquals("Test Book", result.getTitle());
+        assertEquals("Test Author", result.getAuthor());
+        assertEquals("dostępna", result.getIsAvailable());
+
+        verify(bookRepository, times(1)).findById(bookId);
+    }
+
+    @Test
+    public void testGetBookByIdNotFound() {
+
+        Long bookId = 1L;
+
+        when(bookRepository.findById(bookId)).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> {
+            bookService.getBookById(bookId);
+        });
+
+        verify(bookRepository, times(1)).findById(bookId);
     }
 
 }
