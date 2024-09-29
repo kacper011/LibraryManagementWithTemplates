@@ -95,4 +95,18 @@ class BookServiceImplTest {
         verify(bookRepository, times(1)).findById(bookId);
     }
 
+    @Test
+    public void testUpdateBook() {
+
+        Book book = new Book();
+        book.setId(1L);
+        book.setTitle("Test Author");
+        book.setAuthor("Test Title");
+        book.setIsAvailable("dostępna");
+
+        bookService.updateBook(book);
+
+        verify(bookRepository, times(1)).save(book);
+    }
+
 }
