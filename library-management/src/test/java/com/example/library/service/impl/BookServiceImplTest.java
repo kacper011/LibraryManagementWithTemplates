@@ -109,4 +109,18 @@ class BookServiceImplTest {
         verify(bookRepository, times(1)).save(book);
     }
 
+    @Test
+    public void testDeleteBook() {
+
+        Long bookId = 1L;
+        Book book = new Book();
+        book.setId(bookId);
+        book.setAuthor("Test Author");
+        book.setTitle("Test Title");
+        book.setIsAvailable("dostępna");
+
+        bookService.deleteBook(bookId);
+
+        verify(bookRepository, times(1)).deleteById(bookId);
+    }
 }
