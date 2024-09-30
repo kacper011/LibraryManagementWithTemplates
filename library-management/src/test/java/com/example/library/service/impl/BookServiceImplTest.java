@@ -179,4 +179,34 @@ class BookServiceImplTest {
 
         verify(bookRepository, never()).save(book);
     }
+
+    @DisplayName("Return Book Should Mark Book As Available When Book Exists")
+    @Test
+    public void returnBookShouldMarkBookAsAvailableWhenBookExists() {
+
+        Long bookId = 1L;
+        Book book = new Book();
+        book.setId(bookId);
+        book.setAuthor("Test Author");
+        book.setTitle("Test Title");
+        book.setIsAvailable("wypożyczona");
+
+        when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
+
+        bookService.returnBook(bookId);
+
+        assertEquals("dostępna", book.getIsAvailable());
+        verify(bookRepository).save(book);
+    }
+
+    @DisplayName("Return Book Should Throw Exception When Book Does Not Exist")
+    @Test
+    public void returnBookShouldThrowExceptionWhenBookDoesNotExist() {
+        Long bookId = 1L;
+
+        when(bookRepository.findById(bookId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> bookService.returnBook(bookId));
+        verify(bookRepository, never()).save(any());
+    }
 }
