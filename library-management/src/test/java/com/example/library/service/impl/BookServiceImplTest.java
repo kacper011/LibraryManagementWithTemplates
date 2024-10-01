@@ -10,10 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -208,5 +205,27 @@ class BookServiceImplTest {
 
         assertThrows(ResourceNotFoundException.class, () -> bookService.returnBook(bookId));
         verify(bookRepository, never()).save(any());
+    }
+
+    @DisplayName("Search Books By Title")
+    @Test
+    public void testSearchBooksByTitle() {
+
+        String searchTitle = "Harry";
+
+        Book book1 = new Book(1L, "Harry Potter 1", "J.K. Rowling");
+        Book book2 = new Book(2L, "Harry Potter 2", "J.K. Rowling");
+
+        when(bookRepository.findByTitleContainingIgnoreCase(searchTitle))
+                .thenReturn(Arrays.asList(book1, book2));
+
+        List<Book> result = bookService.searchBooksByTitle(searchTitle);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertTrue(result.contains(book1));
+        assertTrue(result.contains(book2));
+
+        verify(bookRepository, times(1)).findByTitleContainingIgnoreCase(searchTitle);
     }
 }
