@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -101,5 +102,74 @@ class RentalServiceImplTest {
         });
 
         assertEquals("Book is already rented", exception.getMessage());
+    }
+
+    @DisplayName("Return Book Successful Return")
+    @Test
+    public void testReturnBookSuccessfulReturn() {
+
+        Long userId = 1L;
+        Long bookId = 1L;
+
+        User user = new User();
+        user.setId(userId);
+
+        Book book = new Book();
+        book.setId(bookId);
+        book.setIsAvailable("wypożyczona");
+
+        Rental rental = new Rental();
+        rental.setBook(book);
+        rental.setUser(user);
+        rental.setReturnDate(null);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
+        when(rentalRepository.findByBookAndUser(book, user)).thenReturn(Collections.singletonList(rental));
+
+        rentalService.returnBook(bookId, userId);
+
+        assertNotNull(rental.getReturnDate());
+        assertEquals("dostępna", book.getIsAvailable());
+
+        verify(rentalRepository, times(1)).save(rental);
+        verify(bookRepository, times(1)).save(book);
+    }
+
+    @DisplayName("Return Book User Not Found")
+    @Test
+    public void testReturnBookUserNotFound() {
+
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+            rentalService.returnBook(1L, 1L);
+        });
+
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @DisplayName("Return Book No Active Rental Found")
+    @Test
+    public void testReturnBookNoActiveRentalFound() {
+
+        Long userId = 1L;
+        Long bookId = 1L;
+
+        User user = new User();
+        user.setId(userId);
+
+        Book book = new Book();
+        book.setId(bookId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
+        when(rentalRepository.findByBookAndUser(book, user)).thenReturn(Collections.EMPTY_LIST);
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            rentalService.returnBook(bookId, userId);
+        });
+
+        assertEquals("No active rental record found for this book and user", exception.getMessage());
     }
 }
