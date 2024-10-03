@@ -15,7 +15,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -171,5 +173,43 @@ class RentalServiceImplTest {
         });
 
         assertEquals("No active rental record found for this book and user", exception.getMessage());
+    }
+
+    @DisplayName("Find Rentals By User When Rentals Exist")
+    @Test
+    public void testFindRentalsByUserWhenRentalsExist() {
+
+        Long userId = 1L;
+
+        Rental rental1 = new Rental();
+        Rental rental2 = new Rental();
+
+        List<Rental> expectedRentals = Arrays.asList(rental1, rental2);
+
+        when(rentalRepository.findByUser_IdAndHiddenFalse(userId)).thenReturn(expectedRentals);
+
+        List<Rental> actualRentals = rentalService.findRentalsByUser(userId);
+
+        assertNotNull(actualRentals);
+        assertEquals(2, actualRentals.size());
+        assertEquals(expectedRentals, actualRentals);
+
+        verify(rentalRepository, times(1)).findByUser_IdAndHiddenFalse(userId);
+    }
+
+    @DisplayName("Find Rentals By User When No Rentals Exist")
+    @Test
+    public void testFindRentalsByUserWhenNoRentalsExist() {
+
+        Long userId = 1L;
+
+        when(rentalRepository.findByUser_IdAndHiddenFalse(userId)).thenReturn(Arrays.asList());
+
+        List<Rental> acutalRentals = rentalService.findRentalsByUser(userId);
+
+        assertNotNull(acutalRentals);
+        assertTrue(acutalRentals.isEmpty());
+
+        verify(rentalRepository, times(1)).findByUser_IdAndHiddenFalse(userId);
     }
 }
