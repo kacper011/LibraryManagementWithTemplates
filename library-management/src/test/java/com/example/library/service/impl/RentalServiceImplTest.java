@@ -212,4 +212,35 @@ class RentalServiceImplTest {
 
         verify(rentalRepository, times(1)).findByUser_IdAndHiddenFalse(userId);
     }
+
+    @DisplayName("Hide Rental Should Hide Rental When Rental Exists")
+    @Test
+    public void testHideRentalShouldHideRentalWhenRentalExists() {
+
+        Long rentalId = 1L;
+        Rental rental = new Rental();
+        rental.setId(rentalId);
+        rental.setHidden(false);
+
+        when(rentalRepository.findById(rentalId)).thenReturn(Optional.of(rental));
+
+        rentalService.hideRental(rentalId);
+
+        assertTrue(rental.isHidden(), "Rental should be hidden");
+
+        verify(rentalRepository).save(rental);
+    }
+
+    @DisplayName("Hide Rental Should Throw Exception When Rental Not Found")
+    @Test
+    public void testHideRentalShouldThrowExceptionWhenRentalNotFound() {
+
+        Long rentalId = 1L;
+
+        when(rentalRepository.findById(rentalId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> rentalService.hideRental(rentalId));
+
+        verify(rentalRepository, never()).save(any());
+    }
 }
