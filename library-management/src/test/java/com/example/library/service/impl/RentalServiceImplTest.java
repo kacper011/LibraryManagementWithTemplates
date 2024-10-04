@@ -243,4 +243,39 @@ class RentalServiceImplTest {
 
         verify(rentalRepository, never()).save(any());
     }
+
+    @DisplayName("Find Rental By Id And User Should Return Rental When Rental Exists")
+    @Test
+    public void testFindRentalByIdAndUserShouldReturnRentalWhenRentalExists() {
+
+        Long rentalId = 1L;
+        Long userId = 1L;
+        Rental rental = new Rental();
+        rental.setId(rentalId);
+
+        when(rentalRepository.findByIdAndUserId(rentalId, userId)).thenReturn(Optional.of(rental));
+
+        Optional<Rental> result = rentalService.findRentalByIdAndUser(rentalId, userId);
+
+        assertTrue(result.isPresent(), "Rental should be found");
+        assertEquals(rentalId, result.get().getId(), "The rental ID should match");
+
+        verify(rentalRepository).findByIdAndUserId(rentalId, userId);
+    }
+
+    @DisplayName("Find Rental By Id And User Should Return Empty When Rental Does Not Exist")
+    @Test
+    public void testFindRentalByIdAndUserShouldReturnEmptyWhenRentalDoesNotExist() {
+
+        Long rentalId = 1L;
+        Long userId = 1L;
+
+        when(rentalRepository.findByIdAndUserId(rentalId, userId)).thenReturn(Optional.empty());
+
+        Optional<Rental> result = rentalService.findRentalByIdAndUser(rentalId, userId);
+
+        assertFalse(result.isPresent(), "Rental should not be found");
+
+        verify(rentalRepository).findByIdAndUserId(rentalId, userId);
+    }
 }
