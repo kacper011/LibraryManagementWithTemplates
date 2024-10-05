@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
             updated = true;
         }
 
-        if (!user.getPassword().equals(newPassword)) {
+        if (!passwordEncoder.matches(newPassword, user.getPassword())) {
             String encodedPassword = passwordEncoder.encode(newPassword);
             user.setPassword(encodedPassword);
             updated = true;

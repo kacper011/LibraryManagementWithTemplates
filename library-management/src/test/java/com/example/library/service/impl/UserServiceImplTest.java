@@ -190,4 +190,74 @@ class UserServiceImplTest {
         verify(userRepository, never()).save(any());
     }
 
+    @DisplayName("Update Profile Should Update Profile When User Exists And Data Is Different")
+    @Test
+    public void testUpdateProfileShouldUpdateProfileWhenUserExistsAndDataIsDifferent() {
+
+        Long userId = 1L;
+        User user = new User();
+        user.setId(userId);
+        user.setName("oldUsername");
+        user.setEmail("oldEmail@gmail.com");
+        user.setPassword("oldPassword");
+
+        String newUsername = "newUsername";
+        String newEmail = "newEmail@gmail.com";
+        String newPassword = "newPassword";
+        String encodedPassword = "encodedNewPassword";
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(passwordEncoder.encode(newPassword)).thenReturn(encodedPassword);
+
+        userServiceImpl.updateProfil(userId, newUsername, newEmail, newPassword);
+
+        verify(userRepository).findById(userId);
+        verify(passwordEncoder).encode(newPassword);
+        assertEquals(newUsername, user.getName());
+        assertEquals(newEmail, user.getEmail());
+        assertEquals(encodedPassword, user.getPassword());
+        verify(userRepository).save(user);
+    }
+
+    @DisplayName("Update Profile Should Not Update Profile When Data Is Same")
+    @Test
+    public void testUpdateProfileShouldNotUpdateProfileWhenDataIsSame() {
+
+        Long userId = 1L;
+        User user = new User();
+        user.setId(userId);
+        user.setName("oldUsername");
+        user.setEmail("oldEmail@gmail.com");
+        user.setPassword("encodedPassword");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("oldPassword", "encodedPassword")).thenReturn(true);
+
+        userServiceImpl.updateProfil(userId, "oldUsername", "oldEmail@gmail.com", "oldPassword");
+
+        verify(userRepository).findById(userId);
+        verify(userRepository, never()).save(any());
+        verify(passwordEncoder).matches("oldPassword", "encodedPassword");
+        verify(passwordEncoder, never()).encode(anyString());
+    }
+
+    @DisplayName("Update Profile Should Throw Exception When User Does Not Exist")
+    @Test
+    public void testUpdateProfileShouldThrowExceptionWhenUserDoesNotExist() {
+
+        Long userId = 1L;
+        User user = new User();
+        user.setId(userId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            userServiceImpl.updateProfil(userId, "newUsername", "newEmail@gmail.com", "newPassword");
+        });
+
+        verify(userRepository).findById(userId);
+        verify(userRepository, never()).save(any());
+        verify(passwordEncoder, never()).encode(anyString());
+    }
+
 }
