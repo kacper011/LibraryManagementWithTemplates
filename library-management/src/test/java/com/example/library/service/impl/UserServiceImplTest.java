@@ -113,4 +113,41 @@ class UserServiceImplTest {
         verify(userRepository, never()).save(any(User.class));
     }
 
+    @DisplayName("Update Username Success")
+    @Test
+    public void testUpdateUsernameSuccess() {
+
+        Long userId = 1L;
+        String newUsername = "newUsername";
+        User user = new User();
+        user.setId(userId);
+        user.setName("oldUsername");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        userServiceImpl.updateUsername(userId, newUsername);
+
+        assertEquals(newUsername, user.getName());
+
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @DisplayName("Update Username User Not Found")
+    @Test
+    public void testUpdateUsernameUserNotFound() {
+
+        Long userId = 1L;
+        String newUsername = "newUsername";
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            userServiceImpl.updateUsername(userId, newUsername);
+        });
+
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, never()).save(any(User.class));
+    }
+
 }
