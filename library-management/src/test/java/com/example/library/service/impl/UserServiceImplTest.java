@@ -150,4 +150,44 @@ class UserServiceImplTest {
         verify(userRepository, never()).save(any(User.class));
     }
 
+    @DisplayName("Update Password Should Update Password When User Exists")
+    @Test
+    public void testUpdatePasswordShouldUpdatePasswordWhenUserExists() {
+
+        Long userId = 1L;
+        User user = new User();
+        user.setId(userId);
+
+        String newPassword = "newPassword";
+        String encodedPassword = "encodedPassword";
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(passwordEncoder.encode(newPassword)).thenReturn(encodedPassword);
+
+        userServiceImpl.updatePassword(userId, newPassword);
+
+        verify(userRepository).findById(userId);
+        verify(passwordEncoder).encode(newPassword);
+        assertEquals(encodedPassword, user.getPassword());
+        verify(userRepository).save(user);
+    }
+
+    @DisplayName("Update Password Should Throw Exception When User Does Not Exist")
+    @Test
+    public void testUpdatePasswordShouldThrowExceptionWhenUserDoesNotExist() {
+
+        Long userId = 1L;
+        User user = new User();
+        user.setId(userId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            userServiceImpl.updatePassword(1L, "newPassword");
+        });
+
+        verify(userRepository).findById(userId);
+        verify(userRepository, never()).save(any());
+    }
+
 }
