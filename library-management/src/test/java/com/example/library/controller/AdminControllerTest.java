@@ -5,6 +5,7 @@ import com.example.library.model.User;
 import com.example.library.repository.UserRepository;
 import com.example.library.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -45,6 +46,7 @@ class AdminControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(adminController).build();
     }
 
+    @DisplayName("User Accounts Should Return Account View Name")
     @Test
     void listUserAccountsShouldReturnAccountViewNameTest() {
 
@@ -58,7 +60,7 @@ class AdminControllerTest {
         assertThat(viewName).isEqualTo("accounts");
         verify(model).addAttribute(eq("users"), any());
     }
-
+    @DisplayName("Delete User Account")
     @Test
     void testDeleteUserAccount() throws Exception {
 

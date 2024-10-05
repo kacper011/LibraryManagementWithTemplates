@@ -2,6 +2,7 @@ package com.example.library.controller;
 
 import com.example.library.model.User;
 import com.example.library.service.UserService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -20,6 +21,7 @@ class RegistrationControllerTest {
     @Mock
     private RabbitTemplate rabbitTemplate;
 
+    @DisplayName("Show Registration Form")
     @Test
     public void showRegistrationFormTest() {
 

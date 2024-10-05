@@ -3,6 +3,7 @@ package com.example.library.controller;
 import com.example.library.model.Book;
 import com.example.library.service.BookService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -43,6 +44,7 @@ class BooksControllerTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @DisplayName("Get Books Admin")
     @Test
     public void getBooksAdminTest() {
         Book book1 = new Book(1L, "Book title 1", "Author 1");
@@ -57,7 +59,7 @@ class BooksControllerTest {
         verify(model).addAttribute("books", books);
     }
 
-
+    @DisplayName("Add Book")
     @Test
     public void addBookTest() {
         String viewName = booksController.addBook(model);
@@ -67,6 +69,7 @@ class BooksControllerTest {
         verify(model).addAttribute(eq("book"), any(Book.class));
     }
 
+    @DisplayName("Should Return Create Book View When Validation Fails")
     @Test
     @WithMockUser(roles = "ADMIN")
     public void shouldReturnCreateBookViewWhenValidationFailsTest() throws Exception {
