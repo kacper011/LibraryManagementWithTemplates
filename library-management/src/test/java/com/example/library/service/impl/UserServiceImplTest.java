@@ -76,4 +76,41 @@ class UserServiceImplTest {
         verify(userRepository, never()).save(any(User.class));
     }
 
+    @DisplayName("Update Email Success")
+    @Test
+    public void testUpdateEmailSuccess() {
+
+        Long userId = 1L;
+        String newEmail = "newemail@gmail.com";
+        User user = new User();
+        user.setId(userId);
+        user.setEmail("oldemail@gmail.com");
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        userServiceImpl.updateEmail(userId, newEmail);
+
+        assertEquals(newEmail, user.getEmail());
+
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @DisplayName("Update Email User Not Found")
+    @Test
+    public void testUpdateEmailUserNotFound() {
+
+        Long userId = 1L;
+        String newEmail = "newemail@gmail.com";
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            userServiceImpl.updateEmail(userId, newEmail);
+        });
+
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, never()).save(any(User.class));
+    }
+
 }
