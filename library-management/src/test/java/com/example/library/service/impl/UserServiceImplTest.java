@@ -1,8 +1,12 @@
 package com.example.library.service.impl;
 
 import com.example.library.exception.ResourceNotFoundException;
+import com.example.library.model.Book;
+import com.example.library.model.Rental;
 import com.example.library.model.Role;
 import com.example.library.model.User;
+import com.example.library.repository.BookRepository;
+import com.example.library.repository.RentalRepository;
 import com.example.library.repository.RoleRepository;
 import com.example.library.repository.UserRepository;
 import com.example.library.service.UserService;
@@ -15,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,6 +34,10 @@ class UserServiceImplTest {
     private UserRepository userRepository;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private BookRepository bookRepository;
+    @Mock
+    private RentalRepository rentalRepository;
     @InjectMocks
     private UserServiceImpl userServiceImpl;
 
@@ -258,6 +267,61 @@ class UserServiceImplTest {
         verify(userRepository).findById(userId);
         verify(userRepository, never()).save(any());
         verify(passwordEncoder, never()).encode(anyString());
+    }
+
+    @DisplayName("Delete User By Id User Exists")
+    @Test
+    public void testDeleteUserByIdUserExists() {
+
+        Long userId = 1L;
+        User user = new User();
+        user.setId(userId);
+
+        Book book1 = new Book();
+        book1.setIsAvailable("wypożyczona");
+
+        Book book2 = new Book();
+        book2.setIsAvailable("wypożyczona");
+
+        Rental rental1 = new Rental();
+        rental1.setBook(book1);
+
+        Rental rental2 = new Rental();
+        rental2.setBook(book2);
+
+        user.setRentals(Arrays.asList(rental1, rental2));
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        userServiceImpl.deleteUserById(userId);
+
+        verify(userRepository, times(1)).findById(userId);
+        verify(bookRepository, times(1)).save(book1);
+        verify(bookRepository, times(1)).save(book2);
+        verify(rentalRepository, times(1)).save(rental1);
+        verify(rentalRepository, times(1)).save(rental2);
+        verify(userRepository, times(1)).delete(user);
+
+        assertEquals("dostępna", book1.getIsAvailable());
+        assertEquals("dostępna", book2.getIsAvailable());
+    }
+
+    @DisplayName("Delete User By Id User Not Found")
+    @Test
+    public void testDeleteUserByIdUserNotFound() {
+
+        Long userId = 1L;
+        User user = new User();
+        user.setId(userId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> {
+            userServiceImpl.deleteUserById(userId);
+        });
+
+        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, never()).delete(any(User.class));
     }
 
 }
