@@ -1,7 +1,12 @@
 package com.example.library.controller;
 
 import com.example.library.model.Book;
+import com.example.library.model.Rental;
+import com.example.library.model.User;
+import com.example.library.repository.UserRepository;
 import com.example.library.service.BookService;
+import com.example.library.service.RentalService;
+import com.example.library.service.impl.RentalServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,13 +15,16 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.Model;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,7 +42,13 @@ class BooksControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Mock
+    private UserRepository userRepository;
+    @Mock
     private BookService bookService;
+    @Mock
+    private RentalServiceImpl rentalServiceImpl;
+    @Mock
+    private RentalService rentalService;
     @Mock
     private Model model;
     @InjectMocks
@@ -86,5 +100,41 @@ class BooksControllerTest {
 
         verify(bookService, never()).createBook(any(Book.class));
     }
+
+    // USER
+
+    @DisplayName("Should Throw ResourceNotFoundException When User Not Found")
+    @WithMockUser(username = "testUser", roles = {"USER"})
+    @Test
+    public void testHideRentalUserNotFound() throws Exception {
+        when(userRepository.findByName("testUser")).thenReturn(Optional.empty());
+
+        mockMvc.perform(post("/my_books/{rentalId}/hide", 1L)
+                        .principal(() -> "testUser")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isNotFound());
+
+        verify(rentalService, never()).hideRental(anyLong());
+    }
+
+    @DisplayName("Should Throw ResourceNotFoundException When Rental Not Found")
+    @WithMockUser(username = "testUser", roles = {"USER"})
+    @Test
+    public void testHideRentalRentalNotFound() throws Exception {
+        User user = new User();
+        user.setId(1L);
+        user.setName("testUser");
+
+        when(userRepository.findByName("testUser")).thenReturn(Optional.of(user));
+        when(rentalService.findRentalByIdAndUser(1L, user.getId())).thenReturn(Optional.empty());
+
+        mockMvc.perform(post("/my_books/{rentalId}/hide", 1L)
+                        .principal(() -> "testUser")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isNotFound());
+
+        verify(rentalService, never()).hideRental(anyLong());
+    }
+
 
 }
