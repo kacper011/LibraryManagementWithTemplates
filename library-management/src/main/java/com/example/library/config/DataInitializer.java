@@ -22,7 +22,7 @@ public class DataInitializer {
     private final PasswordEncoder passwordEncoder;
 
     @Bean
-    public CommandLineRunner commandLineRunner() {
+    public CommandLineRunner commandLineRunner() throws Exception {
         return args -> {
             if (userRepository.findByName("admin").isEmpty()) {
                 Role adminRole = roleRepository.findByName("ROLE_ADMIN")
@@ -40,7 +40,6 @@ public class DataInitializer {
                 Set<Role> roles = new HashSet<>();
                 roles.add(adminRole);
                 admin.setRoles(roles);
-
 
                 userRepository.save(admin);
             }
