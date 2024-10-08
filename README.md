@@ -33,8 +33,3 @@ After the git clone process is completed, you can navigate to the repository dir
 
 Once the application is launched, go to your browser and enter the address localhost:8080/books. You will be immediately redirected to localhost:8080/login. You must register if you don't already have an account.
 
-There is already an account with the admin role:
-
-Login: admin <br>
-Password: adminPassword
-
