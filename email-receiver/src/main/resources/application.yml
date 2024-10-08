@@ -7,8 +7,8 @@ spring:
 
   datasource:
     url: jdbc:mysql://localhost:3306/email_receiver
-    username: root
-    password: Maverick.30
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -19,7 +19,7 @@ spring:
     show-sql: true
 
   rabbitmq:
-    addresses: amqps://lwmkzcjh:kYbiqPDJzDYo3bTRSX2l8P0I3RXqI3zt@cow.rmq2.cloudamqp.com/lwmkzcjh
-    username: lwmkzcjh
-    password: kYbiqPDJzDYo3bTRSX2l8P0I3RXqI3zt
+    addresses: ${RABBITMQ_ADDRESS}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
 
