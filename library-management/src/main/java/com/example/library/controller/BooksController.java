@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,43 +43,28 @@ public class BooksController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public String getAllBooks(Model model, Authentication authentication) {
 
-        // Log to check if authentication is null or not
-        if (authentication == null) {
-            System.out.println("Authentication is null");
-        } else {
-            System.out.println("Authentication is not null, user: " + authentication.getName());
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            System.out.println("Authentication is null or user is not authenticated");
+            return "redirect:/login";
         }
+
+        String username = authentication.getName();
+        System.out.println("Username in controller: " + username);
+        model.addAttribute("username", username);
 
         List<Book> books = bookService.getAllBooks();
+
+
         model.addAttribute("books", books);
 
-        if (authentication != null && authentication.isAuthenticated()) {
-            Object principal = authentication.getPrincipal();
-            String username = "Guest";
-            if (principal instanceof UserDetails) {
-                username = ((UserDetails) principal).getUsername();
-            } else {
-                username = principal.toString();
-            }
-            System.out.println("Username in controller: " + username);
-            model.addAttribute("username", username);
-        }
 
-        boolean hasAdminRole = authentication.getAuthorities()
-                .stream()
+        boolean isAdmin = authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
-        boolean hasUserRole = authentication.getAuthorities()
-                .stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_USER"));
 
-        if (hasAdminRole) {
-            return "books_admin";
-        } else if (hasUserRole) {
-            return "books_user";
-        } else {
-            return "access_denied";
-        }
+        return isAdmin ? "books_admin" : "books_user";
     }
+
 
 
     //ROLE_ADMIN
@@ -109,6 +95,7 @@ public class BooksController {
             return "create_book_admin";
         }
 
+        book.setDateAdded(LocalDate.now());
         bookService.createBook(book);
         return "redirect:/books_admin";
     }

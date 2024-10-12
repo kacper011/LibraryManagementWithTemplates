@@ -148,7 +148,10 @@
         </thead>
         <tbody>
         <tr th:each="book : ${books}">
-          <td th:text="${book.title}"></td>
+          <td>
+            <span th:text="${book.title}"></span>
+            <span th:if="${book.isNew()}" class="badge bg-warning text-dark">Nowość</span>
+          </td>
           <td th:text="${book.author}"></td>
           <td th:text="${book.isAvailable}" th:classappend="${book.isAvailable == 'dostępna'} ? ' bg-success' : ' bg-danger'"></td>
           <td class="actions-column">
@@ -161,6 +164,7 @@
     </div>
   </div>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMF8jYln/NU6Pp3O8jsLxga4q9UWB/jv7Z0n3G1R7rBXgSIBHF6wr06Jz3M" crossorigin="anonymous"></script>
 </body>
