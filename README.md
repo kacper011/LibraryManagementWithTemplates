@@ -9,6 +9,7 @@ A web application for managing a library, allowing users to manage books, borrow
 - Viewing Book Availability: Users have access to the entire list of books, including those currently borrowed and available.
 - New Account Creation: When a new account is created, the user's email address is sent to a dedicated email-receiver application via a RabbitMQ queue. This process ensures efficient management and processing of messages.
 - Email-Receiver Application: This application runs and retrieves messages from the queue, then saves them in a separate database. This ensures reliable storage and access to information about newly created user accounts.
+- New Book Notification: When an administrator adds a new book, a "New Arrival" status is displayed next to the title for 7 days from the date of addition.
 
 ## Technologies
 
