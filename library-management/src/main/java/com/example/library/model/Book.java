@@ -46,6 +46,9 @@ public class Book {
     @Transient
     private boolean isNew;
 
+    @Version
+    private Integer version;
+
     public Book(long l, String s, String s1) {
         this.id = l;
         this.title = s;
