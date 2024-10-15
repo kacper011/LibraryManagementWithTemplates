@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       - MYSQL_DATABASE=library2
-      - MYSQL_ROOT_PASSWORD=Maverick.30
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
     volumes:
       - library-management-mysql-volume:/var/lib/mysql
     ports:
