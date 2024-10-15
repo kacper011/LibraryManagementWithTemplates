@@ -1,10 +1,16 @@
 package com.example.library.exception;
 
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-@AllArgsConstructor
-public class TodoAPIException extends RuntimeException{
 
-    private HttpStatus status;
-    private String message;
+public class TodoAPIException extends RuntimeException {
+    private final HttpStatus status;
+
+    public TodoAPIException(HttpStatus status, String message) {
+        super(message);
+        this.status = status;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
+    }
 }
