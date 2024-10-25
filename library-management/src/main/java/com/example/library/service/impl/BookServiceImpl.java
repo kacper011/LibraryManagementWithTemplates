@@ -66,7 +66,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> searchBooksByTitle(String title) {
-        return bookRepository.findByTitleContainingIgnoreCase(title);
+
+        if(title == null) {
+            return List.of();
+        }
+
+        String normalizedTitle = title.trim().replaceAll("\\s+", " ");
+        return bookRepository.findByTitleContainingIgnoreCase(normalizedTitle);
     }
 
 

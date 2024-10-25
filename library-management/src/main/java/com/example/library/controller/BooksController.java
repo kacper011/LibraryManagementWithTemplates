@@ -153,9 +153,10 @@ public class BooksController {
         }
 
         List<Book> books;
-        if (title != null && !title.isEmpty()) {
-            books = bookService.searchBooksByTitle(title);
-            model.addAttribute("searchQuery", title);
+        if (title != null && !title.trim().isEmpty()) {
+            String normalizedTitle = title.trim().replaceAll("\\s+", " ");
+            books = bookService.searchBooksByTitle(normalizedTitle);
+            model.addAttribute("searchQuery", normalizedTitle);
         } else {
             books = bookService.getAllBooks();
         }
