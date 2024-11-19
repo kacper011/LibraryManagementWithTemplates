@@ -3,7 +3,7 @@ spring:
     name: library-management
 
   datasource:
-    url: jdbc:mysql://localhost:3306/library2
+    url: jdbc:mysql://host.docker.internal:3306/library2
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
