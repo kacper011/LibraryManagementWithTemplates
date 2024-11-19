@@ -6,7 +6,7 @@ spring:
     name: email-receiver
 
   datasource:
-    url: jdbc:mysql://localhost:3306/email_receiver
+    url: jdbc:mysql://host.docker.internal:3306/email_receiver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
