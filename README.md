@@ -21,6 +21,14 @@ A web application for managing a library, allowing users to manage books, borrow
 - MySQL
 - Docker
 - RabbitMQ
+<br><br><br><br>
+
+<h1 align="center">Application overview photos</h1>
+<br><br>
+
+<img src="images/login panel.png" alt="login panel">
+
+<br><br><br><br>
 
 ## Project Download
 First, obtain the URL of the repository you want to download. You can do this by visiting the GitHub repository page, clicking the "Code" button (usually a green button), and copying the HTTPS URL. Here's the direct link to the repository: https://github.com/kacper011/LibraryManagementWithTemplates.git.
