@@ -24,9 +24,70 @@ A web application for managing a library, allowing users to manage books, borrow
 <br><br><br><br>
 
 <h1 align="center">Application overview photos</h1>
-<br><br>
+<br><br><br>
+
+Login panel
 
 <img src="images/login panel.png" alt="login panel">
+
+<br><br><br>
+
+Registration panel
+
+<img src="images/new user registration.png" alt="new user registration">
+
+<br><br><br>
+
+View from the admin account
+
+<img src="images/view from the admin account.png" alt="view from the admin account">
+
+<br><br><br>
+
+Adding a book as admin
+
+<img src="images/adding a book as admin.png" alt="adding a book as admin">
+
+<br><br><br>
+
+Display of user accounts as admin
+
+<img src="images/display of user accounts.png" alt="display of user accounts">
+
+<br><br><br>
+
+Newly added book has a novelty status
+
+<img src="images/newly added book has a novelty status.png" alt="newly added book has a novelty status">
+
+<br><br><br>
+
+View from the user account
+
+<img src="images/view from the user account.png" alt="view from the user account">
+
+<br><br><br>
+
+User account information
+
+<img src="images/user account information.png" alt="user account information">
+
+<br><br><br>
+
+Book details
+
+<img src="images/book details.png" alt="book details">
+
+<br><br><br>
+
+Books borrowed by the user
+
+<img src="images/books borrowed by the user.png" alt="books borrowed by the user">
+
+<br><br><br>
+
+
+
 
 <br><br><br><br>
 
