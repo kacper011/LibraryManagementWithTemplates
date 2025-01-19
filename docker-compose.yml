@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  email-receiver:
+    build:
+      context: ./email-receiver               # Katalog z Dockerfile dla email-receiver
+      dockerfile: Dockerfile
+    container_name: email-receiver-container
+    ports:
+      - "8081:8080"                 # Mapowanie portu 8080 w kontenerze na 8081
+    env_file:
+      - ./email-receiver/.env                 
+    networks:
+      - app-network
+
+  library-management:
+    build:
+      context: ./library-management               # Katalog z Dockerfile dla library-management
+      dockerfile: Dockerfile
+    container_name: library-management-container
+    ports:
+      - "8082:8080"                 # Mapowanie portu 8080 w kontenerze na 8082
+    env_file:
+      - ./library-management/.env                 
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
