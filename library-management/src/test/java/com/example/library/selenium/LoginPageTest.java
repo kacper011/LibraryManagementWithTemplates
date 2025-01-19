@@ -53,4 +53,22 @@ public class LoginPageTest {
         String currentUrl = driver.getCurrentUrl();
         assertTrue(currentUrl.contains("http://localhost:8080/books_user"));
     }
+
+    @DisplayName("Invalid Login")
+    @Test
+    public void testInvalidLogin() {
+
+        WebElement usernameField = driver.findElement(By.name("username"));
+        usernameField.sendKeys("Invalid Username");
+
+        WebElement passwordField = driver.findElement(By.name("password"));
+        passwordField.sendKeys("InvalidPassword");
+
+        WebElement loginButton = driver.findElement(By.cssSelector(".btn-primary"));
+        loginButton.click();
+
+        WebElement errorMessage = driver.findElement(By.cssSelector(".text-danger"));
+        assertNotNull(errorMessage, "No error message on failed login!");
+        assertTrue(errorMessage.getText().contains("Invalid login or password."), "The content of the error message is incorrect!");
+    }
 }
