@@ -1,5 +1,6 @@
 package com.example.library.selenium;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -70,5 +71,13 @@ public class LoginPageTest {
         WebElement errorMessage = driver.findElement(By.cssSelector(".text-danger"));
         assertNotNull(errorMessage, "No error message on failed login!");
         assertTrue(errorMessage.getText().contains("Invalid login or password."), "The content of the error message is incorrect!");
+    }
+
+    @AfterEach
+    public void tearDown(){
+
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
