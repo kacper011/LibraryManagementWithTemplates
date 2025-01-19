@@ -10,6 +10,7 @@ A web application for managing a library, allowing users to manage books, borrow
 - New Account Creation: When a new account is created, the user's email address is sent to a dedicated email-receiver application via a RabbitMQ queue. This process ensures efficient management and processing of messages.
 - Email-Receiver Application: This application runs and retrieves messages from the queue, then saves them in a separate database. This ensures reliable storage and access to information about newly created user accounts. The application sends a welcome e-mail to the user's e-mail address.
 - New Book Notification: When an administrator adds a new book, a "New Arrival" status is displayed next to the title for 7 days from the date of addition.
+- Automated Testing: Selenium is used to automate UI tests for key functionalities such as user login, book borrowing, and returning.
 
 ## Technologies
 
@@ -21,6 +22,7 @@ A web application for managing a library, allowing users to manage books, borrow
 - MySQL
 - Docker
 - RabbitMQ
+- Selenium (for automated UI testing)
 <br><br><br><br>
 
 <h1 align="center">Application overview photos</h1>
