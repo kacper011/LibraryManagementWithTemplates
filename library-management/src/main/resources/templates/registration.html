@@ -80,6 +80,9 @@
             <input type="text" class="form-control" id="name" name="name" th:field="*{name}" placeholder="Name"
                    pattern="^[A-Z][a-zA-Z]*"
                    title="Name must start with a capital letter and contain only letters" required>
+            <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                <p th:errors="*{name}">Invalid name</p>
+            </div>
         </div>
         <div class="form-group">
             <input type="email" class="form-control" id="email" name="email" th:field="*{email}" placeholder="Email"

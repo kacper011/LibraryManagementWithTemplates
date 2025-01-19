@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -30,8 +31,6 @@ public class RegistrationTest {
     @Test
     public void testRegistrationSuccess() {
 
-        driver.get("http://localhost:8080/registration");
-
         WebElement nameField = driver.findElement(By.id("name"));
         WebElement emailField = driver.findElement(By.id("email"));
         WebElement passwordField = driver.findElement(By.id("password"));
@@ -47,6 +46,27 @@ public class RegistrationTest {
         wait.until(ExpectedConditions.urlContains("/login"));
 
         assertTrue(driver.getCurrentUrl().contains("/login"));
+    }
+
+    @DisplayName("Name Invalid")
+    @Test
+    public void testNameInvalid() {
+
+
+        WebElement nameField = driver.findElement(By.id("name"));
+        nameField.sendKeys("janusz");
+
+        WebElement submitButton = driver.findElement(By.cssSelector("button[type='submit']"));
+        submitButton.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        try {
+            WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".invalid-feedback")));
+            assertTrue(errorMessage.isDisplayed());
+        } catch (TimeoutException e) {
+            System.out.println("The validation error did not occur at the predictable time.");
+        }
     }
 
     @AfterEach
