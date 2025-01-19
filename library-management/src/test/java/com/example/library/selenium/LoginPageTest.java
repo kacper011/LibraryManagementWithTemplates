@@ -36,4 +36,21 @@ public class LoginPageTest {
         WebElement registerLink = driver.findElement(By.linkText("Register"));
         assertNotNull(registerLink, "The link Register was not found!");
     }
+
+    @DisplayName("Successful Login")
+    @Test
+    public void testSuccessfulLogin() {
+
+        WebElement usernameField = driver.findElement(By.name("username"));
+        usernameField.sendKeys("Kacper11");
+
+        WebElement passwordField = driver.findElement(By.name("password"));
+        passwordField.sendKeys("kacper11");
+
+        WebElement loginButton = driver.findElement(By.cssSelector(".btn-primary"));
+        loginButton.click();
+
+        String currentUrl = driver.getCurrentUrl();
+        assertTrue(currentUrl.contains("http://localhost:8080/books_user"));
+    }
 }
