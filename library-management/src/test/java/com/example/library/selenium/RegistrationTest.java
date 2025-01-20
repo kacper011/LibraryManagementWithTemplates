@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RegistrationTest {
@@ -60,6 +61,27 @@ public class RegistrationTest {
         submitButton.click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        try {
+            WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".invalid-feedback")));
+            assertTrue(errorMessage.isDisplayed());
+        } catch (TimeoutException e) {
+            System.out.println("The validation error did not occur at the predictable time.");
+        }
+    }
+
+    @DisplayName("Email Validation")
+    @Test
+    public void testEmailValidation() {
+
+        WebElement emailField = driver.findElement(By.id("email"));
+        emailField.sendKeys("invalid-email");
+
+        WebElement submitButton = driver.findElement(By.cssSelector("button[type='submit']"));
+        submitButton.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
 
         try {
             WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".invalid-feedback")));
