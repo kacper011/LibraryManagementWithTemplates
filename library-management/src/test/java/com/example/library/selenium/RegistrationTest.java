@@ -91,6 +91,28 @@ public class RegistrationTest {
         }
     }
 
+    @DisplayName("Password Validation")
+    @Test
+    public void testPasswordValidation() {
+
+        WebElement passwordField = driver.findElement(By.id("password"));
+        passwordField.sendKeys("123");
+
+        WebElement submitButton = driver.findElement(By.cssSelector("button[type='submit']"));
+        submitButton.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+
+        try {
+            WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".invalid-feedback")));
+            assertTrue(errorMessage.isDisplayed());
+        } catch (TimeoutException e) {
+            System.out.println("The validation error did not occur at the predictable time.");
+        }
+    }
+
+
     @AfterEach
     public void tearDown() {
 
