@@ -4,9 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -26,12 +24,7 @@ public class BooksAdminTest {
     public void setUp() {
         System.setProperty("webdriver.chrome.driver", "D:/chromedriver-win64/chromedriver.exe");
         driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Inicjalizowanie WebDriverWait
-    }
-
-    @DisplayName("Books Admin Page Load")
-    @Test
-    public void testBooksAdminLoadPage() {
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.get("http://localhost:8080/login");
 
@@ -44,6 +37,25 @@ public class BooksAdminTest {
         WebElement loginButton = driver.findElement(By.cssSelector(".btn-primary"));
         loginButton.click();
 
+        wait.until(ExpectedConditions.urlContains("/books_admin"));
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".table")));
+    }
+
+    private void handleAlert() {
+        try {
+            Alert alert = driver.switchTo().alert();
+            alert.accept();  // Akceptowanie alertu
+        } catch (NoAlertPresentException e) {
+            // Brak alertu - nic nie robimy
+        }
+    }
+
+
+    @DisplayName("Books Admin Page Load")
+    @Test
+    public void testBooksAdminLoadPage() {
+
         wait.until(ExpectedConditions.urlToBe("http://localhost:8080/books_admin"));
 
         assertEquals("http://localhost:8080/books_admin", driver.getCurrentUrl(), "URL is incorrect!");
@@ -53,10 +65,24 @@ public class BooksAdminTest {
 
         WebElement table = driver.findElement(By.cssSelector(".table"));
         assertTrue(table.isDisplayed());
-        
+
         List<WebElement> rows = table.findElements(By.tagName("tr"));
         assertTrue(rows.size() > 1, "No books in the table.");
     }
+
+    @DisplayName("Admin Actions Visible")
+    @Test
+    public void testAdminActionsVisible() {
+
+        WebElement editButton = driver.findElement(By.cssSelector("a.btn-primary"));
+        WebElement deleteButton = driver.findElement(By.cssSelector("a.btn-danger"));
+
+        assertTrue(editButton.isDisplayed());
+        assertTrue(deleteButton.isDisplayed());
+    }
+
+
+
 
 
     @AfterEach
