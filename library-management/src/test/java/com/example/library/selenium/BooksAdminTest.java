@@ -81,6 +81,19 @@ public class BooksAdminTest {
         assertTrue(deleteButton.isDisplayed());
     }
 
+    @DisplayName("Logout")
+    @Test
+    public void testLogout() {
+
+        WebElement logoutButton = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("a[href='/logout']")
+        ));
+
+        logoutButton.click();
+        
+        wait.until(ExpectedConditions.urlContains("/login"));
+        assertTrue(driver.getCurrentUrl().contains("/login"));
+    }
 
 
 
