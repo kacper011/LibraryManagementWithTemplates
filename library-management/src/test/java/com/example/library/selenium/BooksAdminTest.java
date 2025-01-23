@@ -12,7 +12,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -130,6 +129,28 @@ public class BooksAdminTest {
         WebElement form = driver.findElement(By.tagName("form"));
         assertTrue(form.isDisplayed());
     }
+
+    @DisplayName("Save Book With Admin Role")
+    @Test
+    public void testSaveBookWithAdminRole() {
+
+        driver.get("http://localhost:8080/books/new");
+
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[name='title']")));
+
+        driver.findElement(By.id("title")).sendKeys("Test Book Title");
+        driver.findElement(By.id("author")).sendKeys("Test Author");
+        driver.findElement(By.id("isAvailable")).sendKeys("true");
+        driver.findElement(By.id("summary")).sendKeys("This is a test summary for the book.");
+
+        driver.findElement(By.cssSelector(".btn-primary")).click();
+
+        wait.until(ExpectedConditions.urlContains("/books_admin"));
+        assertTrue(driver.getCurrentUrl().contains("/books_admin"));
+    }
+
 
 
 
