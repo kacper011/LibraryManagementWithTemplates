@@ -115,9 +115,20 @@ public class BooksAdminTest {
         assertTrue(driver.getCurrentUrl().contains("/books_user"), "Użytkownik z rolą USER powinien zostać przekierowany na /books_user po zalogowaniu");
 
         driver.get("http://localhost:8080/books_user");
-        
+
         wait.until(ExpectedConditions.urlContains("/books_user"));
         assertTrue(driver.getCurrentUrl().contains("/books_user"), "Użytkownik z rolą USER powinien zostać przekierowany z /books_admin na /books_user");
+    }
+
+    @DisplayName("Access Add Book With Admin Role")
+    @Test
+    public void testAccessAddBookWithAdminRole() {
+
+        driver.get("http://localhost:8080/books/new");
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("form")));
+        WebElement form = driver.findElement(By.tagName("form"));
+        assertTrue(form.isDisplayed());
     }
 
 
