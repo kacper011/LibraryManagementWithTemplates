@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
+import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -45,9 +46,8 @@ public class BooksAdminTest {
     private void handleAlert() {
         try {
             Alert alert = driver.switchTo().alert();
-            alert.accept();  // Akceptowanie alertu
+            alert.accept();
         } catch (NoAlertPresentException e) {
-            // Brak alertu - nic nie robimy
         }
     }
 
@@ -90,10 +90,36 @@ public class BooksAdminTest {
         ));
 
         logoutButton.click();
-        
+
         wait.until(ExpectedConditions.urlContains("/login"));
         assertTrue(driver.getCurrentUrl().contains("/login"));
     }
+
+    @DisplayName("Access Without Admin Role")
+    @Test
+    public void testAccessWithoutAdminRole() {
+
+        driver.get("http://localhost:8080/logout");
+        wait.until(ExpectedConditions.urlContains("/login"));
+
+        WebElement usernameField = driver.findElement(By.name("username"));
+        usernameField.sendKeys("Kacper11");
+
+        WebElement passwordField = driver.findElement(By.name("password"));
+        passwordField.sendKeys("kacper11");
+
+        WebElement loginButton = driver.findElement(By.cssSelector(".btn-primary"));
+        loginButton.click();
+
+        wait.until(ExpectedConditions.urlContains("/books_user"));
+        assertTrue(driver.getCurrentUrl().contains("/books_user"), "Użytkownik z rolą USER powinien zostać przekierowany na /books_user po zalogowaniu");
+
+        driver.get("http://localhost:8080/books_user");
+        
+        wait.until(ExpectedConditions.urlContains("/books_user"));
+        assertTrue(driver.getCurrentUrl().contains("/books_user"), "Użytkownik z rolą USER powinien zostać przekierowany z /books_admin na /books_user");
+    }
+
 
 
 
