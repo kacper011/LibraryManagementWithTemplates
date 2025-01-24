@@ -18,4 +18,6 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findByUser_IdAndHiddenFalse(Long userId);
 
     Optional<Rental> findByIdAndUserId(Long rentalId, Long id);
+
+    List<Rental> findByBookId(Long id);
 }

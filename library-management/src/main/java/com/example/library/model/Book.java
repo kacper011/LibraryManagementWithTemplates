@@ -37,7 +37,7 @@ public class Book {
     @Column(columnDefinition = "TEXT")
     private String summary;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Rental> rentals;
 
     @Column(nullable = false)

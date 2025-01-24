@@ -7,6 +7,7 @@ import com.example.library.model.User;
 import com.example.library.repository.UserRepository;
 import com.example.library.service.BookService;
 import com.example.library.service.RentalService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -121,15 +122,25 @@ public class BooksController {
     }
     @GetMapping("/books/{id}/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Transactional
     public String deleteBook(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
-        Book book = bookService.getBookById(id);
+        try {
+            Book book = bookService.getBookById(id);
 
-        if ("wypożyczona".equalsIgnoreCase(book.getIsAvailable())) {
-            redirectAttributes.addFlashAttribute("error", "Nie można usunąć książki, która jest wypożyczona.");
-            return "redirect:/books";
+            if ("wypożyczona".equalsIgnoreCase(book.getIsAvailable())) {
+                redirectAttributes.addFlashAttribute("error", "Nie można usunąć książki, która jest wypożyczona.");
+                return "redirect:/books";
+            }
+
+            rentalService.deleteByBookId(id);
+
+            bookService.deleteBook(id);
+
+            redirectAttributes.addFlashAttribute("success", "Książka została usunięta.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Wystąpił błąd podczas usuwania książki: " + e.getMessage());
         }
 
-        bookService.deleteBook(id);
         return "redirect:/books";
     }
 

@@ -17,4 +17,6 @@ public interface RentalService {
     void hideRental(Long rentalId);
 
     Optional<Rental> findRentalByIdAndUser(Long rentalId, Long id);
+
+    void deleteByBookId(Long id);
 }

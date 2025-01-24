@@ -97,5 +97,12 @@ public class RentalServiceImpl implements RentalService {
         return  rentalRepository.findByIdAndUserId(rentalId, id);
     }
 
+    @Override
+    public void deleteByBookId(Long id) {
+
+        List<Rental> rentals = rentalRepository.findByBookId(id);
+        rentalRepository.deleteAll(rentals);
+    }
+
 
 }
