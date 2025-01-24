@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
 
         for (Rental rental : user.getRentals()) {
             Book book = rental.getBook();
-            book.setIsAvailable("dostępna");
+            book.setIsAvailable("available");
             bookRepository.save(book);
             rental.setUser(null);
             rentalRepository.save(rental);

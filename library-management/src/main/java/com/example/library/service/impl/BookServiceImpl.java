@@ -49,18 +49,18 @@ public class BookServiceImpl implements BookService {
     public void rentBook(Long id) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
 
-        if("wypożyczona".equals(book.getIsAvailable())) {
+        if("rented".equals(book.getIsAvailable())) {
             throw new IllegalStateException("Book is already rented");
         }
 
-        book.setIsAvailable("wypożyczona");
+        book.setIsAvailable("rented");
         bookRepository.save(book);
     }
 
     @Override
     public void returnBook(Long id) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
-        book.setIsAvailable("dostępna");
+        book.setIsAvailable("available");
         bookRepository.save(book);
     }
 

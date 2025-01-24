@@ -37,13 +37,13 @@ public class RentalServiceImpl implements RentalService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
 
-        if (!"dostępna".equals(book.getIsAvailable())) {
+        if (!"available".equals(book.getIsAvailable())) {
             throw new IllegalStateException("Book is already rented");
         }
 
         LocalDateTime now = LocalDateTime.now().withSecond(0).withNano(0);
 
-        book.setIsAvailable("wypożyczona");
+        book.setIsAvailable("rented");
         bookRepository.save(book);
 
         Rental rental = new Rental();
@@ -75,7 +75,7 @@ public class RentalServiceImpl implements RentalService {
         rental.setReturnDate(LocalDateTime.now().withSecond(0).withNano(0));
         rentalRepository.save(rental);
 
-        book.setIsAvailable("dostępna");
+        book.setIsAvailable("available");
         bookRepository.save(book);
     }
 

@@ -153,10 +153,10 @@
             <span th:if="${book.isNew()}" class="badge bg-warning text-dark">Nowość</span>
           </td>
           <td th:text="${book.author}"></td>
-          <td th:text="${book.isAvailable}" th:classappend="${book.isAvailable == 'dostępna'} ? ' bg-success' : ' bg-danger'"></td>
+          <td th:text="${book.isAvailable}" th:classappend="${book.isAvailable == 'available'} ? ' bg-success' : ' bg-danger'"></td>
           <td class="actions-column">
             <a class="btn btn-info btn-sm" th:href="@{/books/{id}/view(id=${book.id})}">View</a>
-            <a class="btn btn-primary btn-sm" th:href="@{/books/{id}/rent(id=${book.id})}" th:classappend="${book.isAvailable == 'wypożyczona'} ? 'btn-disabled' : ''">Rent</a>
+            <a class="btn btn-primary btn-sm" th:href="@{/books/{id}/rent(id=${book.id})}" th:classappend="${book.isAvailable == 'rented'} ? 'btn-disabled' : ''">Rent</a>
           </td>
         </tr>
         </tbody>

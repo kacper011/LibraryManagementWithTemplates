@@ -114,7 +114,7 @@
             <span th:if="${book.isNew()}" class="badge bg-warning text-dark ms-2">Nowość</span>
           </td>
           <td th:text="${book.author}"></td>
-          <td th:text="${book.isAvailable}" th:classappend="${book.isAvailable == 'dostępna'} ? ' bg-success' : ' bg-danger'"></td>
+          <td th:text="${book.isAvailable}" th:classappend="${book.isAvailable == 'available'} ? ' bg-success' : ' bg-danger'"></td>
           <td class="actions-column">
             <a class="btn btn-primary btn-sm" th:href="@{/books/{id}/edit(id=${book.id})}" sec:authorize="hasRole('ROLE_ADMIN')">Edit</a>
             <a class="btn btn-danger btn-sm delete-btn" th:data-status="${book.isAvailable}" th:href="@{/books/{id}/delete(id=${book.id})}" sec:authorize="hasRole('ROLE_ADMIN')">Delete</a>

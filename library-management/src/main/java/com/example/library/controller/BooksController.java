@@ -127,8 +127,8 @@ public class BooksController {
         try {
             Book book = bookService.getBookById(id);
 
-            if ("wypożyczona".equalsIgnoreCase(book.getIsAvailable())) {
-                redirectAttributes.addFlashAttribute("error", "Nie można usunąć książki, która jest wypożyczona.");
+            if ("rented".equalsIgnoreCase(book.getIsAvailable())) {
+                redirectAttributes.addFlashAttribute("error", "You cannot remove a book that is on loan.");
                 return "redirect:/books";
             }
 
@@ -136,9 +136,9 @@ public class BooksController {
 
             bookService.deleteBook(id);
 
-            redirectAttributes.addFlashAttribute("success", "Książka została usunięta.");
+            redirectAttributes.addFlashAttribute("success", "The book has been removed.");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Wystąpił błąd podczas usuwania książki: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "An error occurred while deleting a book: " + e.getMessage());
         }
 
         return "redirect:/books";

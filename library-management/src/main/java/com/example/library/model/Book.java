@@ -32,7 +32,7 @@ public class Book {
     private String author;
 
     @Column(nullable = false)
-    private String isAvailable = "dostępna";
+    private String isAvailable = "available";
 
     @Column(columnDefinition = "TEXT")
     private String summary;
