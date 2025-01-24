@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: library-management
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/library2
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+
+  rabbitmq:
+    addresses: ${RABBITMQ_ADDRESS}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+
+  thymeleaf:
+    cache: false
+    enabled: true
+
+  security:
+    user:
+      name: ${SECURITY_USER_NAME}
+      password: ${SECURITY_USER_PASSWORD}
+      roles: ADMIN
+
+  messages:
+    basename: messages
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
