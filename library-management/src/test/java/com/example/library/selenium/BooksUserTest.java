@@ -62,6 +62,29 @@ public class BooksUserTest {
 
     }
 
+    @DisplayName("Search Books By Title")
+    @Test
+    public void testSearchBooksByTitle() {
+
+        WebElement searchField = driver.findElement(By.name("title"));
+        searchField.sendKeys("Test");
+
+        WebElement searchButton = driver.findElement(By.cssSelector("button[type='submit']"));
+        searchButton.click();
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.className("table")));
+
+        WebElement table = driver.findElement(By.className("table"));
+        List<WebElement> rows = table.findElements(By.tagName("tr"));
+        assertTrue(rows.size() > 1);
+
+        boolean found = rows.stream()
+                .skip(1)
+                .anyMatch(row -> row.getText().contains("Test"));
+
+        assertTrue(found, "The table does not include books with the title 'Test'");
+    }
+
 
 
 
