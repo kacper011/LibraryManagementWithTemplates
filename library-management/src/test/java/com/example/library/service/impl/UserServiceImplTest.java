@@ -278,10 +278,10 @@ class UserServiceImplTest {
         user.setId(userId);
 
         Book book1 = new Book();
-        book1.setIsAvailable("wypożyczona");
+        book1.setIsAvailable("rented");
 
         Book book2 = new Book();
-        book2.setIsAvailable("wypożyczona");
+        book2.setIsAvailable("rented");
 
         Rental rental1 = new Rental();
         rental1.setBook(book1);
@@ -302,8 +302,8 @@ class UserServiceImplTest {
         verify(rentalRepository, times(1)).save(rental2);
         verify(userRepository, times(1)).delete(user);
 
-        assertEquals("dostępna", book1.getIsAvailable());
-        assertEquals("dostępna", book2.getIsAvailable());
+        assertEquals("available", book1.getIsAvailable());
+        assertEquals("available", book2.getIsAvailable());
     }
 
     @DisplayName("Delete User By Id User Not Found")

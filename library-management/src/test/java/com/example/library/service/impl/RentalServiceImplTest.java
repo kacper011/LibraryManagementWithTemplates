@@ -52,14 +52,14 @@ class RentalServiceImplTest {
 
         Book book = new Book();
         book.setId(bookId);
-        book.setIsAvailable("dostępna");
+        book.setIsAvailable("available");
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
 
         rentalService.rentBook(bookId, userId);
 
-        assertEquals("wypożyczona", book.getIsAvailable());
+        assertEquals("rented", book.getIsAvailable());
 
         verify(bookRepository, times(1)).save(book);
 
@@ -118,7 +118,7 @@ class RentalServiceImplTest {
 
         Book book = new Book();
         book.setId(bookId);
-        book.setIsAvailable("wypożyczona");
+        book.setIsAvailable("rented");
 
         Rental rental = new Rental();
         rental.setBook(book);
@@ -132,7 +132,7 @@ class RentalServiceImplTest {
         rentalService.returnBook(bookId, userId);
 
         assertNotNull(rental.getReturnDate());
-        assertEquals("dostępna", book.getIsAvailable());
+        assertEquals("available", book.getIsAvailable());
 
         verify(rentalRepository, times(1)).save(rental);
         verify(bookRepository, times(1)).save(book);

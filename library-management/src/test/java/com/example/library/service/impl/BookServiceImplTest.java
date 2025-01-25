@@ -137,13 +137,13 @@ class BookServiceImplTest {
         book.setId(bookId);
         book.setAuthor("Test Author");
         book.setTitle("Test Title");
-        book.setIsAvailable("dostępna");
+        book.setIsAvailable("available");
 
         when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
 
         bookService.rentBook(bookId);
 
-        assertEquals("wypożyczona", book.getIsAvailable());
+        assertEquals("rented", book.getIsAvailable());
         verify(bookRepository, times(1)).save(book);
     }
 
@@ -168,7 +168,7 @@ class BookServiceImplTest {
         book.setId(bookId);
         book.setAuthor("Test Author");
         book.setTitle("Test Title");
-        book.setIsAvailable("wypożyczona");
+        book.setIsAvailable("rented");
 
         when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
 
@@ -186,13 +186,13 @@ class BookServiceImplTest {
         book.setId(bookId);
         book.setAuthor("Test Author");
         book.setTitle("Test Title");
-        book.setIsAvailable("wypożyczona");
+        book.setIsAvailable("rented");
 
         when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
 
         bookService.returnBook(bookId);
 
-        assertEquals("dostępna", book.getIsAvailable());
+        assertEquals("available", book.getIsAvailable());
         verify(bookRepository).save(book);
     }
 

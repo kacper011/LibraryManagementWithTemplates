@@ -142,7 +142,7 @@ public class BooksAdminTest {
 
         driver.findElement(By.id("title")).sendKeys("Test Book Title");
         driver.findElement(By.id("author")).sendKeys("Test Author");
-        driver.findElement(By.id("isAvailable")).sendKeys("true");
+        driver.findElement(By.id("isAvailable")).sendKeys("available");
         driver.findElement(By.id("summary")).sendKeys("This is a test summary for the book.");
 
         driver.findElement(By.cssSelector(".btn-primary")).click();
