@@ -15,8 +15,7 @@ import javax.sound.sampled.Line;
 import java.time.Duration;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BooksUserTest {
 
@@ -83,6 +82,21 @@ public class BooksUserTest {
                 .anyMatch(row -> row.getText().contains("Test"));
 
         assertTrue(found, "The table does not include books with the title 'Test'");
+    }
+
+    @DisplayName("Rent Button Is Disabled For Unavailable Books")
+    @Test
+    public void testRentButtonIsDisabledForUnavailableBooks() {
+
+        List<WebElement> rentButtons = driver.findElements(By.cssSelector(".btn-primary"));
+        assertFalse(rentButtons.isEmpty());
+
+        for (WebElement button : rentButtons) {
+            String classAttribute = button.getAttribute("class");
+            if (classAttribute.contains("btn-disabled")) {
+                assertTrue(classAttribute.contains("btn-disabled"), "The ‘Rent’ button for an unavailable book should be disabled.");
+            }
+        }
     }
 
 
