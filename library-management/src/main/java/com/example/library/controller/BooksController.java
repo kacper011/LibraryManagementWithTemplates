@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -188,6 +189,11 @@ public class BooksController {
     public String viewBook(@PathVariable("id") Long id, Model model) {
         Book book = bookService.getBookById(id);
         model.addAttribute("book", book);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        model.addAttribute("username", username);
+
         return "view_book";
     }
 
