@@ -136,6 +136,20 @@ public class BooksUserTest {
 
     }
 
+    @DisplayName("Rent Book")
+    @Test
+    public void testRentBook() {
+
+        WebElement rentButton = driver.findElement(By.xpath("//a[@href='/books/4/rent' and text()='Rent']"));
+
+        assertTrue(rentButton.isEnabled(), "Rent button should be enabled for available book");
+        rentButton.click();
+
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.urlContains("/my_books"));
+
+        String currentUrl = driver.getCurrentUrl();
+        assertTrue(currentUrl.contains("/my_books"), "The user was not redirected to the ‘my_books’ page");
+    }
 
 
 
