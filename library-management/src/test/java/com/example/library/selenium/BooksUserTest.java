@@ -151,6 +151,23 @@ public class BooksUserTest {
         assertTrue(currentUrl.contains("/my_books"), "The user was not redirected to the ‘my_books’ page");
     }
 
+    @DisplayName("Return Book")
+    @Test
+    public void testReturnBook() {
+
+        driver.get("http://localhost:8080/my_books");
+
+        String bookId = "4";
+        String xpathReturnButton = "//td//form[@action='/books/" + bookId + "/return']//button[@type='submit' and text()='Return']";
+        WebElement returnButton = driver.findElement(By.xpath(xpathReturnButton));
+        returnButton.click();
+
+        wait.until(ExpectedConditions.urlContains("/my_books"));
+
+        String currentUrl = driver.getCurrentUrl();
+        assertTrue(currentUrl.contains("/my_books"), "The user was not redirected to the ‘my_books’ page");
+    }
+
 
 
     @AfterEach
