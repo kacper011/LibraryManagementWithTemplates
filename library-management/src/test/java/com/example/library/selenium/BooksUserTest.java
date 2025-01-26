@@ -99,6 +99,43 @@ public class BooksUserTest {
         }
     }
 
+    @DisplayName("View Book Details")
+    @Test
+    public void testViewBookDetails() {
+
+        driver.get("http://localhost:8080/books/1/view");
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.className("card-header")));
+
+        WebElement header = driver.findElement(By.className("card-header"));
+        assertEquals("Book Details", header.getText().trim(), "The heading should be ‘Book Details");
+
+        WebElement titleElement = driver.findElement(By.xpath("//p[contains(text(), 'Book Title:')]/strong"));
+        assertNotNull(titleElement);
+        assertFalse(titleElement.getText().isEmpty(), "The title of the book should not be empty");
+
+        WebElement authorElement = driver.findElement(By.xpath("//p[contains(text(), 'Book Author:')]/strong"));
+        assertNotNull(authorElement);
+        assertFalse(authorElement.getText().isEmpty(), "The author of the book should not be empty");
+
+        WebElement availabilityElement = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//p[contains(text(), 'Book Available:')]/strong")
+                ));
+
+        String availabilityText = availabilityElement.getText().toLowerCase();
+
+        assertTrue(
+                availabilityText.equals("available") || availabilityText.equals("rented"),
+                "Availability should have been ‘available’ or ‘rented’, but it was: " + availabilityText
+        );
+
+        WebElement summaryElement = driver.findElement(By.xpath("//div[contains(@class, 'book-summary')]/p"));
+        assertNotNull(summaryElement);
+        assertFalse(summaryElement.getText().isEmpty(), "The summary of the book should not be empty");
+
+    }
+
 
 
 
