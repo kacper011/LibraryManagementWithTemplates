@@ -168,6 +168,25 @@ public class BooksUserTest {
         assertTrue(currentUrl.contains("/my_books"), "The user was not redirected to the ‘my_books’ page");
     }
 
+    @DisplayName("Delete Returned Book")
+    @Test
+    public void testDeleteReturnedBook() {
+
+        driver.get("http://localhost:8080/my_books");
+
+        String rentalId = "196"; // You must check the correct rentalId in your browser
+        String xpathDeleteButton = "//form[@action='/my_books/" + rentalId + "/hide']//button[text()='Delete']";
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement deleteButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpathDeleteButton)));
+        deleteButton.click();
+
+        boolean isBookDeleted = driver.findElements(By.xpath("//form[@action='/my_books/" + rentalId + "/hide']")).isEmpty();
+
+        assertTrue(isBookDeleted, "The book has not been removed!");
+
+    }
+
 
 
     @AfterEach
