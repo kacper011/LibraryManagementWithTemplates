@@ -187,6 +187,26 @@ public class BooksUserTest {
 
     }
 
+    @DisplayName("My Account Page")
+    @Test
+    public void testMyAccountPage() {
+
+        driver.get("http://localhost:8080/my_account");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement usernameInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
+        WebElement emailInput = driver.findElement(By.id("email"));
+
+        String usernameValue = usernameInput.getAttribute("value");
+        String emailValue = emailInput.getAttribute("value");
+
+        System.out.println("Username: " + usernameValue);
+        System.out.println("Email: " + emailValue);
+
+        assertEquals("Kacper11", usernameValue, "Username is incorrect!");
+        assertEquals("kacper-szabat@wp.pl", emailValue, "Email is incorrect!");
+    }
+
 
 
     @AfterEach
