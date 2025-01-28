@@ -207,6 +207,17 @@ public class BooksUserTest {
         assertEquals("kacper-szabat@wp.pl", emailValue, "Email is incorrect!");
     }
 
+    @DisplayName("Logout")
+    @Test
+    public void testLogout() {
+
+        WebElement logoutButton = driver.findElement(By.xpath("//a[@href='/logout']"));
+        logoutButton.click();
+
+        String currentUrl = driver.getCurrentUrl();
+        assertEquals("http://localhost:8080/login?logout", currentUrl);
+    }
+
 
 
     @AfterEach
