@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+
+    environment {
+        ENV_FILE = ".env"
+        IMAGE_NAME = "library-management"
+        CONTAINER_NAME = "library-container"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/kacper011/LibraryManagementWithTemplates'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh "docker build -t ${IMAGE_NAME} ."
+                }
+            }
+        }
+
+        stage('Run Application') {
+            steps {
+                script {
+                    sh "docker stop ${CONTAINER_NAME} || true && docker rm ${CONTAINER_NAME} || true"
+                    sh "docker run --env-file ${ENV_FILE} -p 8080:8080 --name ${CONTAINER_NAME} -d ${IMAGE_NAME}"
+                }
+            }
+        }
+    }
+}
