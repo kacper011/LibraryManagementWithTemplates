@@ -75,16 +75,16 @@
 </head>
 <body>
 <div class="login-form">
-    <h2>Library Login</h2>
+    <h2 id="form-header">Library Login</h2>
     <form th:action="@{/login}" method="post">
         <div class="form-group">
             <input type="text" class="form-control" name="username" id="username" placeholder="Name" required autofocus/>
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" name="password" placeholder="Password" required/>
+            <input type="password" class="form-control" name="password" id="password" placeholder="Password" required/>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Log in</button>
+            <button type="submit" class="btn btn-primary" id="btn-login">Log in</button>
         </div>
         <p class="text-danger" th:if="${param.error != null}">
             Invalid login or password.
