@@ -118,7 +118,7 @@
           <span class="nav-link text-white" th:text="'Welcome, ' + ${username}"></span>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a>
+          <a class="nav-link active" th:href="@{/logout}" sec:authorize="isAuthenticated()" id="logout-btn">Logout</a>
         </li>
       </ul>
     </div>
