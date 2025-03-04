@@ -42,7 +42,19 @@ describe('Login Page', () => {
             cy.get('#logout-btn').should('exist').click();
 
             cy.url().should('eq', 'http://localhost:8080/login?logout')
+        })
+    })
 
+    describe('Incorrect login', () => {
+        it('Checks incorrect login', () => {
+            cy.get('.login-form').should('exist');
+            cy.get('#username').should('exist').type('example')
+            cy.get('#password').should('exist').type('example')
+            cy.get('#btn-login').should('exist').click();
+
+            cy.get('.text-danger').should('be.visible').and('contain.text', 'Invalid login or password.')
+
+            cy.url().should('eq', 'http://localhost:8080/login?error')
         })
     })
 })
