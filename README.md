@@ -23,6 +23,7 @@ A web application for managing a library, allowing users to manage books, borrow
 - Docker
 - RabbitMQ
 - Selenium (for automated UI testing)
+- Cypress
 <br><br><br><br>
 
 <h1 align="center">Application overview photos</h1>
