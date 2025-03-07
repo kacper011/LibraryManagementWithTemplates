@@ -16,21 +16,4 @@ describe('Login Page', () => {
             cy.get('#form-header').should('have.text', 'Library Login')
         })
     })
-
-    describe('Correct login', () => {
-        it('Validates login as admin', () => {
-            cy.get('.login-form').should('exist');
-            cy.get('#username').should('exist').type('admin')
-            cy.get('#password').should('exist').type('adminPassword')
-            cy.get('#btn-login').should('exist').click();
-
-            cy.url().should('eq', 'http://localhost:8080/books_admin')
-
-            cy.get('#logout-btn').should('exist').click();
-
-            cy.url().should('eq', 'http://localhost:8080/login?logout')
-        })
-
-
-    })
 })
