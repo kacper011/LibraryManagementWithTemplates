@@ -3,12 +3,10 @@ describe('Login Tests', () => {
         cy.visit('http://localhost:8080/login');
     });
 
-    it('Opens the login page', () => {
+    it('Validates login page visibility and admin login/logout process', () => {
         cy.url().should('eq', 'http://localhost:8080/login');
         cy.get('.login-form').should('be.visible');
-    });
 
-    it('Validates login as admin', () => {
         cy.get('.login-form').should('exist');
         cy.get('#username').should('exist').type('admin');
         cy.get('#password').should('exist').type('adminPassword');
