@@ -95,14 +95,65 @@ Books borrowed by the user
 <br><br><br><br>
 
 ## Project Download
-First, obtain the URL of the repository you want to download. You can do this by visiting the GitHub repository page, clicking the "Code" button (usually a green button), and copying the HTTPS URL. Here's the direct link to the repository: https://github.com/kacper011/LibraryManagementWithTemplates.git.
+Step 1: Copy the URL of the repository: <br>
+Go to the GitHub page of the project and copy the HTTPS link: <br>
+https://github.com/kacper011/LibraryManagementWithTemplates.git <br> <br>
 
-Open your terminal or command prompt on your computer.
+Step 2: Open a terminal or command line <br>
+Windows: use CMD, PowerShell, or terminal inside VS Code <br>
+macOS/Linux: open the built-in Terminal <br> <br>
 
-Use the git clone command in the terminal to clone the repository from GitHub. The command syntax is as follows:
-git clone https://github.com/kacper011/LibraryManagementWithTemplates.git
+Step 3: Clone the repository <br>
+Paste this command in the terminal and confirm with Enter: <br>
+``git clone https://github.com/kacper011/LibraryManagementWithTemplates.git`` <br>
+This will download the entire project folder to your local machine. <br> <br>
 
-After the git clone process is completed, you can navigate to the repository directory on your computer and verify that all files have been successfully downloaded.
+Step 4: Navigate to the project directory <br>
+Once cloning is complete, go to the folder: <br>
+cd LibraryManagementWithTemplates <br>
+Now you are inside the project directory and ready to build or run the app. <br> <br>
 
-Once the application is launched, go to your browser and enter the address localhost:8080/books. You will be immediately redirected to localhost:8080/login. You must register if you don't already have an account.
+## Database Setup Instructions (MySQL)
+
+1. Install and Start MySQL
+If you don’t have MySQL installed:
+
+Windows: Use MySQL Installer
+
+Linux: <br>
+``sudo apt install mysql-server`` <br>
+``sudo service mysql start`` <br>
+
+macOS: <br>
+``brew install mysql`` <br>
+``brew services start mysql`` <br>
+
+2. Create the Database and User <br>
+Log into MySQL: <br> 
+``mysql -u root -p`` <br>
+
+Then run the following SQL commands: <br>
+``CREATE DATABASE library2;`` <br>
+
+``CREATE USER 'library_user'@'localhost' IDENTIFIED BY 'haslo123';`` <br>
+
+``GRANT ALL PRIVILEGES ON library2.* TO 'library_user'@'localhost';`` <br>
+
+``FLUSH PRIVILEGES;`` <br>
+
+3. Set Environment Variables <br>
+The application reads the database username and password from environment variables. <br>
+
+On Linux/macOS: <br>
+``export DB_USERNAME=library_user`` <br>
+``export DB_PASSWORD=haslo123`` <br>
+
+On Windows (CMD): <br>
+``set DB_USERNAME=library_user`` <br>
+``set DB_PASSWORD=haslo123`` <br>
+
+Make sure MySQL is running before starting the app. <br>
+
+
+
 
